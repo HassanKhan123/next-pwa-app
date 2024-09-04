@@ -22,7 +22,7 @@ function Search() {
         <span className="text-white lg:text-[34px] text-[24px] font-medium">
           Unlock Every Answer
         </span>
-        <div className="flex order-2 lg:order-1 items-center justify-center lg:gap-[10px] gap-[5px] mt-[30px]">
+        <div className="flex order-2 lg:order-1 w-full lg:w-auto items-center justify-center lg:gap-[10px] gap-[5px] mt-[30px]">
           <InputWithVoice />
           <div className="flex items-center justify-center rounded-full w-[53px] h-[54px] bg-purple-gradient">
             <Image src={UpArrow} alt="up_arrow" />

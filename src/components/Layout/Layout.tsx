@@ -22,7 +22,7 @@ function Layout({ children }: LayoutProps) {
           className={`flex w-full rounded-lg lg:m-[10px] m-[0px] h-full bg-black flex-col transition-all duration-300 ease-in-out`}
         >
           <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-          <div className="flex flex-col p-[20px]">{children}</div>
+          <div className="flex flex-col lg:p-[20px] p-[10px]">{children}</div>
         </div>
       </div>
     </>
