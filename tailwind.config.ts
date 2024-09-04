@@ -8,9 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundColor: {
-        'bg-black': "#000000"
-      }
+      colors: {
+        'custom-purple': '#140926', 
+      },
     },
   },
   plugins: [],

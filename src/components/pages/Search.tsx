@@ -1,10 +1,11 @@
 import React from "react";
+import Layout from "../Layout/Layout";
 
 function Search() {
   return (
-    <div className="flex items-center justify-center min-h-screen">
-    <h1 className="text-white text-3xl">Hello World</h1>
-  </div>
+ <Layout>
+    <h1 className="text-white">Content Here!</h1>
+ </Layout>
   );
 }
 
