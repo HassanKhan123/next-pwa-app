@@ -11,6 +11,9 @@ const config: Config = {
       colors: {
         'custom-purple': '#140926', 
       },
+      backgroundImage: {
+        'purple-gradient': 'linear-gradient(90deg, #A93CFF 0%, #7A3CFF 100%)',
+      },
     },
   },
   plugins: [],

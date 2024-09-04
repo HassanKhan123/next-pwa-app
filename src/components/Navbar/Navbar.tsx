@@ -15,15 +15,15 @@ function Navbar({ isSidebarOpen, toggleSidebar }: NavbarProps) {
     {!isSidebarOpen && (
       <button
         onClick={toggleSidebar}
-        className="text-white mr-[20px] focus:outline-none"
+        className="text-white lg:mr-[20px] mr-[0px] focus:outline-none"
       >
         <Image src={Hamburger} alt="hamburger" />
       </button>
     )}
-    <div className="flex items-center">
+    <div className="flex w-full items-center justify-center lg:justify-start">
       <Image src={TarsLogo} alt="tars_logo" />
     </div>
-    <div className="ml-auto p-[5px_18px_5px_5px] gap-[10px] rounded-full bg-[#863CFF26] border border-[#863CFF33] flex items-center">
+    <div className="ml-auto p-[5px_5px_5px_5px] lg:p-[5px_30px_5px_5px] gap-[10px] rounded-full bg-[#863CFF26] border border-[#863CFF33] flex items-center">
       <img
         src="https://via.placeholder.com/40"
         alt="Profile"
@@ -31,7 +31,7 @@ function Navbar({ isSidebarOpen, toggleSidebar }: NavbarProps) {
         width={36}
         height={36}
       />
-      <span className="text-white text-center font-[avenir] text-[18px] font-medium">
+      <span className="hidden lg:block text-white text-center font-[avenir] text-[18px] font-medium">
         john
       </span>
     </div>
