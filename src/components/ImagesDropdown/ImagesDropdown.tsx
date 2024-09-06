@@ -39,14 +39,13 @@ function ImagesDropdown() {
         </div>
       </div>
       {isDropdownOpen && (
-        <div className="flex w-full gap-[6px] flex-wrap items-center">
+        <div className="flex w-full gap-[3px] flex-wrap items-center">
           {ImagesColors.map((color, index) => (
             <div
               key={index}
               className="flex items-center rounded-[4px] justify-center w-[113px] h-[70px]"
               style={{ backgroundColor: color }}
             >
-              <Image src={PlayIcon} alt="play_icon" width={28} height={28} />
             </div>
           ))}
           <div className="flex items-center border border-dotted border-[rgba(255,255,255,0.10)] rounded-[4px] justify-center w-[113px] h-[70px]">

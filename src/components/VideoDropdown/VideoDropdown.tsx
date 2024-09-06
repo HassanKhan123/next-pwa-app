@@ -38,7 +38,7 @@ function VideoDropdown() {
         </div>
       </div>
       {isDropdownOpen && (
-        <div className="flex w-full gap-[6px] flex-wrap items-center">
+        <div className="flex w-full gap-[3px] flex-wrap items-center">
           {ImagesColors.map((color, index) => (
             <div
               key={index}

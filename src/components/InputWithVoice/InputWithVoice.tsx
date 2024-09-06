@@ -1,12 +1,25 @@
 import React, { useState } from "react";
 import VoiceIcon from "../../assests/voice_icon.svg";
 import Image from "next/image";
+import { useSearch } from "@/Context/SearchContext";
+import { useRouter } from "next/navigation";
+
 
 function InputWithVoice() {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState("")
+  const { setSearchValue } = useSearch();
+  const router = useRouter();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      router.push("/chat");
+      setSearchValue(searchQuery)
+      setSearchQuery("")
+    }
   };
 
   return (
@@ -16,7 +29,8 @@ function InputWithVoice() {
         placeholder="Ask me anything..."
         value={searchQuery}
         onChange={handleInputChange}
-        className="bg-black text-white rounded-full h-[56px] w-full lg:w-[597px] p-[2px_6px_2px_20px] border border-[rgba(255,255,255,0.10)]"
+        onKeyDown={handleKeyDown}
+        className="bg-black text-white rounded-full h-[56px] w-full p-[2px_6px_2px_20px] border border-[rgba(255,255,255,0.10)]"
       />
       <div className="absolute right-0 inset-y-0 flex items-center pr-2">
         <Image src={VoiceIcon} alt="voice_icon" />

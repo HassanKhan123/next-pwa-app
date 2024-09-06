@@ -16,7 +16,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
   };
   return (
     <div
-      className={`absolute z-20 lg:z-0 lg:static w-full rounded-lg lg:w-[22rem] h-screen bg-[#140926] text-white transform ${
+      className={`absolute z-20 lg:z-0 lg:static w-full rounded-lg lg:w-[25rem] h-screen bg-[#140926] text-white transform ${
         isSidebarOpen
           ? "translate-x-0 flex flex-col"
           : "-translate-x-full hidden"

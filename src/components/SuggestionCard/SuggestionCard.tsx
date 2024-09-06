@@ -4,12 +4,13 @@ import Image from "next/image";
 
 interface SuggestionCardProps {
     heading: string;
-    paragraph: string
+    paragraph: string;
+    navigateToChat: () => void
   }
 
-function SuggestionCard({heading,paragraph}:SuggestionCardProps) {
+function SuggestionCard({heading,paragraph,navigateToChat}:SuggestionCardProps) {
   return (
-    <div className="w-[358px] lg:w-[324px] lg:h-[76px] h-[69px] relative rounded-[20px] flex border border-[#863CFF33] bg-[#863CFF33] flex-col justify-center p-[20px]">
+    <div onClick={navigateToChat} className="w-[358px] lg:w-[324px] lg:h-[76px] h-[69px] relative rounded-[20px] flex border border-[#863CFF33] bg-[#863CFF33] flex-col justify-center p-[20px]">
       <Image
         src={UpArrow}
         alt="up_arrow"
