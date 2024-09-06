@@ -18,6 +18,7 @@ const suggestions = [
 
 function Search() {
   const router = useRouter();
+  const {setSearchValue} = useSearch()
 
   return (
     <Layout>
@@ -38,7 +39,10 @@ function Search() {
             key={index} 
             heading={suggestion.heading}
             paragraph={suggestion.paragraph}
-            navigateToChat={() =>  router.push('/chat')}
+            navigateToChat={() =>  {
+              router.push('/chat')
+              setSearchValue(suggestion.heading)}
+            }
           />
         ))}
         </div>
