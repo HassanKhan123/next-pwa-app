@@ -38,7 +38,7 @@ jobs:
       - name: Build project
         run: |
           if [ "${{ github.ref }}" == "refs/heads/dev" ]; then
-          yarn build:stage || npm run build:stage
+          yarn build:dev || npm run build:dev
           elif [ "${{ github.ref }}" == "refs/heads/main" ]; then
           yarn build:prod || npm run build:prod
           fi
