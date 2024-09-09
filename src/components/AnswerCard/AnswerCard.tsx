@@ -4,10 +4,19 @@ import ReloadIcon from "../../assests/reload_icon.svg";
 import AttachmentIcon from "../../assests/attachment_icon.svg";
 import SaveIcon from "../../assests/save_icon.svg";
 import ShareIcon from "../../assests/share_icon.svg";
+import Skeleton from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css';
 
-function AnswerCard() {
+interface AnswerCardProps {
+  isLoading: boolean; 
+}
+
+function AnswerCard({isLoading}:AnswerCardProps) {
   return (
     <div className="flex w-full max-w-full lg:max-w-[775px] flex-col bg-[#863CFF26] rounded-[20px] gap-[15px] p-[20px]">
+    {isLoading ?
+    <Skeleton count={3} highlightColor="#803CFF" /> :
+    <>
       <div className="flex gap-[15px] items-center">
         <span className="text-[18px] bg-gradient-to-r from-[#A93CFF] to-[#7A3CFF] bg-clip-text text-transparent font-bold font-[avenir]">
           TARS
@@ -43,6 +52,8 @@ function AnswerCard() {
           <Image src={ShareIcon} alt="share_icon" width={16} height={16} />
         </div>
       </div>
+      </>
+}
     </div>
   );
 }

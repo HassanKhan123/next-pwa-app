@@ -16,6 +16,7 @@ import { SourceCardData } from "./SourceCardData";
 import ArrowRightIcon from "../../assests/right_arrow.svg"
 import { useSearch } from "@/Context/SearchContext";
 
+
 function Chat() {
   const { searchValue } = useSearch();
   return (
@@ -58,7 +59,7 @@ function Chat() {
               />
               <span className="text-white font-normal text-[18px]">Answer</span>
             </div>
-            <AnswerCard />
+            <AnswerCard isLoading={false} />
           </div>
           <div className="flex flex-col gap-[10px]">
             <div className="flex items-center gap-[7px]">
