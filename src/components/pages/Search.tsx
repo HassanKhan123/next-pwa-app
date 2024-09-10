@@ -24,9 +24,9 @@ function Search() {
     <Layout>
       <div className="flex flex-col h-[85vh] justify-start lg:justify-center items-center">
         <Image src={ThreeStars} alt="stars" />
-        <span className="text-white lg:text-[34px] text-[24px] font-medium">
+        <h2 className="text-white lg:text-[34px] text-[24px] font-medium">
           Unlock Every Answer
-        </span>
+        </h2>
         <div className="flex order-2 lg:order-1 w-full lg:w-[660px] items-center justify-center lg:gap-[10px] gap-[5px] mt-[30px]">
           <InputWithVoice />
           <div className="flex items-center justify-center rounded-full w-[53px] h-[54px] bg-purple-gradient">

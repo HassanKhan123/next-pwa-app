@@ -34,7 +34,7 @@ function Chat() {
                 width={40}
                 height={40}
               />
-              <span className="text-white font-normal text-[18px]">Sources</span>
+              <h3 className="text-white font-normal text-[18px]">Sources</h3>
             </div>
             <div className="flex lg:flex-wrap overflow-x-scroll hide-scrollbar lg:overflow-visible w-full max-w-[350px] lg:max-w-full gap-[10px]">
             {SourceCardData.map((item,index) => (
@@ -57,16 +57,16 @@ function Chat() {
                 width={40}
                 height={40}
               />
-              <span className="text-white font-normal text-[18px]">Answer</span>
+              <h3 className="text-white font-normal text-[18px]">Answer</h3>
             </div>
             <AnswerCard isLoading={false} />
           </div>
           <div className="flex flex-col gap-[10px]">
             <div className="flex items-center gap-[7px]">
               <Image src={InfoIcon} alt="info_icon" width={40} height={40} />
-              <span className="text-white font-normal text-[18px]">
+              <h3 className="text-white font-normal text-[18px]">
                 Related
-              </span>
+              </h3>
             </div>
             {collapserData.map((item, index) => (
               <Collapser key={index} text={item.text} />
