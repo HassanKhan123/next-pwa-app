@@ -1,4 +1,4 @@
-import DummyImage from "../../assests/dummy_source_card_image.png"
+import DummyImage from "../assests/dummy_source_card_image.png"
 export const SourceCardData = [
    {
     text: "The creator economy could approach half-a-trillion dollars by 2027",

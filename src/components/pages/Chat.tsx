@@ -7,12 +7,12 @@ import UpArrow from "../../assests/up_arrow.svg";
 import Image from "next/image";
 import Collapser from "../Collapser/Collapser";
 import InfoIcon from "../../assests/info_icon.svg";
-import { collapserData } from "./CollapserData";
+import { collapserData } from "../../utils/CollapserData";
 import AnswerCard from "../AnswerCard/AnswerCard";
 import TarsLogoWithoutExplorer from "../../assests/tars_logo_without_explorer.svg";
 import SourcesIcon from "../../assests/sources_icon.svg"
 import SourcesCard from "../SourcesCard/SourcesCard";
-import { SourceCardData } from "./SourceCardData";
+import { SourceCardData } from "../../utils/SourceCardData";
 import ArrowRightIcon from "../../assests/right_arrow.svg"
 import { useAtom } from "jotai";
 import { searchAtom } from "@/atoms";
