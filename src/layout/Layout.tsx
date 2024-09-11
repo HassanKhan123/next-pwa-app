@@ -1,6 +1,7 @@
+"use client"
 import React, { useState, ReactNode } from "react";
-import Sidebar from "../Siderbar/Sidebar";
-import Navbar from "../Navbar/Navbar";
+import Sidebar from "@/components/Siderbar/Sidebar";
+import Navbar from "@/components/Navbar/Navbar";
 
 interface LayoutProps {
   children: ReactNode;
@@ -19,10 +20,10 @@ function Layout({ children }: LayoutProps) {
         <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
         <div
-          className={`flex w-full rounded-lg lg:m-[10px] m-[0px] h-full bg-black flex-col transition-all duration-300 ease-in-out`}
+          className={`flex w-full rounded-lg h-full bg-black flex-col transition-all duration-300 ease-in-out`}
         >
           <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-          <div className="flex flex-col min-h-screen lg:p-[20px] p-[10px]">{children}</div>
+          <div className="flex flex-col min-h-screen">{children}</div>
         </div>
       </div>
     </>

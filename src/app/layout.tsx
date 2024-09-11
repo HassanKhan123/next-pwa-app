@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { SearchProvider } from "@/Context/SearchContext";
+import { Provider as JotaiProvider } from "jotai";
+import Layout from "../layout/Layout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,10 +18,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-      <SearchProvider>
+      <body className={`lg:p-[10px] p-[0px] ${inter.className}`}>
+      <JotaiProvider>
+        <Layout>
         {children}
-        </SearchProvider>
+        </Layout>
+        </JotaiProvider>
         </body>
     </html>
   );

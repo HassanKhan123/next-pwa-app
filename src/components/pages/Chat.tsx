@@ -1,5 +1,5 @@
 import React from "react";
-import Layout from "../Layout/Layout";
+import Layout from "@/layout/Layout";
 import ImagesDropdown from "../ImagesDropdown/ImagesDropdown";
 import VideoDropdown from "../VideoDropdown/VideoDropdown";
 import InputWithVoice from "../InputWithVoice/InputWithVoice";
@@ -14,14 +14,14 @@ import SourcesIcon from "../../assests/sources_icon.svg"
 import SourcesCard from "../SourcesCard/SourcesCard";
 import { SourceCardData } from "./SourceCardData";
 import ArrowRightIcon from "../../assests/right_arrow.svg"
-import { useSearch } from "@/Context/SearchContext";
+import { useAtom } from "jotai";
+import { searchAtom } from "@/Jotai/SearchAtom";
 
 
 function Chat() {
-  const { searchValue } = useSearch();
+  const [searchValue] = useAtom(searchAtom);
   return (
-    <Layout>
-      <div className="flex gap-[20px] justify-between w-full">
+      <div className="flex gap-[20px] lg:p-[20px] p-[10px] justify-between w-full">
         <div className="flex flex-col gap-[30px]">
           <h1 className="text-white text-[28px] font-normal font-[avenir]">
             {searchValue ?  searchValue : "What is the price of Solana"}
@@ -73,7 +73,7 @@ function Chat() {
             ))}
           </div>
 
-          <div className="flex fixed bottom-5 ml-[-10px] lg:ml-[0px] items-center w-full lg:w-[775px] lg:gap-[10px] gap-[5px]">
+          <div className="flex fixed bottom-5 ml-[-12px] lg:ml-[0px] items-center w-full lg:w-[775px] lg:gap-[10px] gap-[5px]">
             <InputWithVoice />
             <div className="flex items-center justify-center rounded-full w-[53px] h-[54px] bg-purple-gradient">
               <Image src={UpArrow} alt="up_arrow" />
@@ -85,7 +85,6 @@ function Chat() {
           <VideoDropdown />
         </div>
       </div>
-    </Layout>
   );
 }
 

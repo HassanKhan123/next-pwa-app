@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import VoiceIcon from "../../assests/voice_icon.svg";
 import Image from "next/image";
-import { useSearch } from "@/Context/SearchContext";
+import { searchAtom } from "@/Jotai/SearchAtom";
 import { useRouter } from "next/navigation";
+import { useAtom } from "jotai";
 
 
 function InputWithVoice() {
   const [searchQuery, setSearchQuery] = useState("")
-  const { setSearchValue } = useSearch();
   const router = useRouter();
+  const [searchValue, setSearchValue] = useAtom(searchAtom);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);

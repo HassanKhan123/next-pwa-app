@@ -1,12 +1,12 @@
 import React from "react";
-import Layout from "../Layout/Layout";
 import Image from "next/image";
 import ThreeStars from "../../assests/three_stars.svg";
 import InputWithVoice from "../InputWithVoice/InputWithVoice";
 import UpArrow from "../../assests/up_arrow.svg";
 import SuggestionCard from "../SuggestionCard/SuggestionCard";
 import { useRouter } from 'next/navigation';
-import { useSearch } from "@/Context/SearchContext";
+import { searchAtom } from "@/Jotai/SearchAtom";
+import { useAtom } from "jotai";
 
 
 const suggestions = [
@@ -18,10 +18,8 @@ const suggestions = [
 
 function Search() {
   const router = useRouter();
-  const {setSearchValue} = useSearch()
-
+  const [searchValue, setSearchValue] = useAtom(searchAtom);
   return (
-    <Layout>
       <div className="flex flex-col h-[85vh] justify-start lg:justify-center items-center">
         <Image src={ThreeStars} alt="stars" />
         <h2 className="text-white lg:text-[34px] text-[24px] font-medium">
@@ -47,7 +45,6 @@ function Search() {
         ))}
         </div>
       </div>
-    </Layout>
   );
 }
 
