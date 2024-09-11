@@ -5,7 +5,7 @@ import InputWithVoice from "../InputWithVoice/InputWithVoice";
 import UpArrow from "../../assests/up_arrow.svg";
 import SuggestionCard from "../SuggestionCard/SuggestionCard";
 import { useRouter } from 'next/navigation';
-import { searchAtom } from "@/Jotai/SearchAtom";
+import { searchAtom } from "@/atoms";
 import { useAtom } from "jotai";
 
 

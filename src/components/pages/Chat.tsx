@@ -15,7 +15,7 @@ import SourcesCard from "../SourcesCard/SourcesCard";
 import { SourceCardData } from "./SourceCardData";
 import ArrowRightIcon from "../../assests/right_arrow.svg"
 import { useAtom } from "jotai";
-import { searchAtom } from "@/Jotai/SearchAtom";
+import { searchAtom } from "@/atoms";
 
 
 function Chat() {

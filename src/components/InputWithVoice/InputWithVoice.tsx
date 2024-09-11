@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import VoiceIcon from "../../assests/voice_icon.svg";
 import Image from "next/image";
-import { searchAtom } from "@/Jotai/SearchAtom";
+import { searchAtom } from "@/atoms";
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 
