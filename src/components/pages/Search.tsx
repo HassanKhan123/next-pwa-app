@@ -7,10 +7,11 @@ import SuggestionCard from "../SuggestionCard/SuggestionCard";
 import { useRouter } from 'next/navigation';
 import { searchAtom } from "@/atoms";
 import { useAtom } from "jotai";
+import { usePostMessage } from "@/hooks/usePostMessage";
 
 
 const suggestions = [
-  { heading: "Lorem ipsum dolor sit amet", paragraph: "Lorem ipsum dolor sit amet, consectetur" },
+  { heading: "Tell me the price of Solana", paragraph: "Lorem ipsum dolor sit amet, consectetur" },
   { heading: "Lorem ipsum dolor sit amet", paragraph: "Lorem ipsum dolor sit amet, consectetur" },
   { heading: "Lorem ipsum dolor sit amet", paragraph: "Lorem ipsum dolor sit amet, consectetur" },
   { heading: "Lorem ipsum dolor sit amet", paragraph: "Lorem ipsum dolor sit amet, consectetur" },
@@ -19,6 +20,10 @@ const suggestions = [
 function Search() {
   const router = useRouter();
   const [searchValue, setSearchValue] = useAtom(searchAtom);
+
+  const mutation = usePostMessage();
+
+
   return (
       <div className="flex flex-col h-[85vh] justify-start lg:justify-center items-center">
         <Image src={ThreeStars} alt="stars" />
@@ -38,8 +43,17 @@ function Search() {
             heading={suggestion.heading}
             paragraph={suggestion.paragraph}
             navigateToChat={() =>  {
-              router.push('/chat')
-              setSearchValue(suggestion.heading)}
+              mutation.mutate(searchValue, {
+                onSuccess: (data) => {
+                  console.log('Response from server:', data);
+                  router.push('/chat')
+                  setSearchValue(suggestion.heading)
+                },
+                onError: (error) => {
+                  console.error('Error:', error);
+                }
+              });
+            }
             }
           />
         ))}

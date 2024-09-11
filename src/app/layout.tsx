@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Provider as JotaiProvider } from "jotai";
 import Layout from "../layout/Layout";
+import AppKitProvider from "@/context";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,12 +20,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`lg:p-[10px] p-[0px] ${inter.className}`}>
-      <JotaiProvider>
-        <Layout>
-        {children}
-        </Layout>
-        </JotaiProvider>
-        </body>
+        <AppKitProvider>
+          <JotaiProvider>
+            <Layout>{children}</Layout>
+          </JotaiProvider>
+        </AppKitProvider>
+      </body>
     </html>
   );
 }
