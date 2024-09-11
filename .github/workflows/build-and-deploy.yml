@@ -1,0 +1,100 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18.17.1"
+
+      - name: Set environment variables
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/dev" ]; then
+          echo "SERVER_HOST=${{ secrets.DEV_SERVER_HOST }}" >> $GITHUB_ENV
+          echo "SERVER_USER=${{ secrets.DEV_SERVER_USER }}" >> $GITHUB_ENV
+          echo "BUILD_FOLDER=.next" >> $GITHUB_ENV
+          elif [ "${{ github.ref }}" == "refs/heads/main" ]; then
+          echo "SERVER_HOST=${{ secrets.PROD_SERVER_HOST }}" >> $GITHUB_ENV
+          echo "SERVER_USER=${{ secrets.PROD_SERVER_USER }}" >> $GITHUB_ENV
+          echo "BUILD_FOLDER=.next" >> $GITHUB_ENV
+          fi
+
+      - name: Install dependencies
+        run: |
+          yarn install || npm install
+
+      - name: Build project
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/dev" ]; then
+          yarn build || npm run build
+          elif [ "${{ github.ref }}" == "refs/heads/main" ]; then
+          yarn build || npm run build
+          fi
+
+
+      - name: Remove existing folder on server
+        uses: appleboy/ssh-action@v0.1.9
+        with:
+          host: ${{ env.SERVER_HOST }}
+          username: ${{ env.SERVER_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            echo ${{ secrets.SSH_PASSWORD }} | sudo -S rm -rf /home/ubuntu/tars-explorer-frontend
+
+      - name: Upload package.json to server
+        uses: appleboy/scp-action@v0.1.5
+        with:
+          host: ${{ env.SERVER_HOST }}
+          username: ${{ env.SERVER_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          target: /home/ubuntu/tars-explorer-frontend
+          source: package.json
+
+      - name: Upload node modules to server
+        uses: appleboy/scp-action@v0.1.5
+        with:
+          host: ${{ env.SERVER_HOST }}
+          username: ${{ env.SERVER_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          target: /home/ubuntu/tars-explorer-frontend
+          source: node_modules/*
+
+      - name: Upload Public folder to server
+        uses: appleboy/scp-action@v0.1.5
+        with:
+          host: ${{ env.SERVER_HOST }}
+          username: ${{ env.SERVER_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          target: /home/ubuntu/tars-explorer-frontend
+          source: public/*
+
+      - name: Deploy to server
+        uses: appleboy/scp-action@v0.1.5
+        with:
+          host: ${{ env.SERVER_HOST }}
+          username: ${{ env.SERVER_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          target: /home/ubuntu/tars-explorer-frontend
+          source: ${{ env.BUILD_FOLDER }}/*
+
+
+      - name: Restart PM2
+        uses: appleboy/ssh-action@v0.1.9
+        with:
+          host: ${{ env.SERVER_HOST }}
+          username: ${{ env.SERVER_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            pm2 restart 0
