@@ -5,13 +5,12 @@ import { chatDataAtom } from "@/atoms";
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import { postMessage } from "@/services/api/api";
-import UpArrow from "../../../assests/up_arrow.svg"
-
+import UpArrow from "../../../assests/up_arrow.svg";
 
 function InputWithVoice() {
-  const [searchQuery, setSearchQuery] = useState("")
+  const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
-  const [,setChatData] = useAtom(chatDataAtom);
+  const [, setChatData] = useAtom(chatDataAtom);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -19,7 +18,6 @@ function InputWithVoice() {
 
   const handleSearch = async (message: string) => {
     const onContentReceived = (newContent: string) => {
-
       setChatData((prevData) => {
         const lastResponseIndex = prevData.responses.length - 1;
 
@@ -27,7 +25,7 @@ function InputWithVoice() {
           ...prevData,
           responses: prevData.responses.map((response, index) =>
             index === lastResponseIndex
-              ? { ...response, content: response.content + newContent } 
+              ? { ...response, content: response.content + newContent }
               : response
           ),
         };
@@ -35,13 +33,13 @@ function InputWithVoice() {
     };
 
     const onParsedChunkReceived = (parsedChunkData: any) => {
-      const sources = parsedChunkData?.sources || []; 
+      const sources = parsedChunkData?.sources || [];
 
       setChatData((prevChatData) => ({
         ...prevChatData,
         responses: [
           ...prevChatData.responses,
-          { sources, content: "" , timestamp: new Date().toISOString()}, 
+          { sources, content: "", timestamp: new Date().toISOString() },
         ],
       }));
     };
@@ -49,7 +47,7 @@ function InputWithVoice() {
     try {
       await postMessage(message, onContentReceived, onParsedChunkReceived);
     } catch (error) {
-      console.error('Error during postData call:', error);
+      console.error("Error during postData call:", error);
     }
   };
 
@@ -57,25 +55,25 @@ function InputWithVoice() {
     if (event.key === "Enter") {
       setChatData((prev) => ({
         ...prev,
-        searchValues: [...prev.searchValues, searchQuery], 
+        searchValues: [...prev.searchValues, searchQuery],
       }));
       router.push("/chat");
-      handleSearch(searchQuery)
-      setSearchQuery("")
+      handleSearch(searchQuery);
+      setSearchQuery("");
     }
   };
 
   const handleClick = () => {
-    if(searchQuery) {
+    if (searchQuery) {
       setChatData((prev) => ({
         ...prev,
-        searchValues: [...prev.searchValues, searchQuery], 
+        searchValues: [...prev.searchValues, searchQuery],
       }));
       router.push("/chat");
-      handleSearch(searchQuery)
-      setSearchQuery("")
+      handleSearch(searchQuery);
+      setSearchQuery("");
     }
-  }
+  };
 
   return (
     <div className="relative w-full flex items-center lg:gap-[10px] gap-[5px]">
@@ -87,16 +85,17 @@ function InputWithVoice() {
         onKeyDown={handleKeyDown}
         className="bg-[#0c1019] text-white rounded-[12px] h-[56px] w-full p-[2px_6px_2px_20px] border border-[rgba(255,255,255,0.10)]"
       />
-      <div className="absolute right-[60px] inset-y-0 flex items-center">
-        <Image src={VoiceIcon} alt="voice_icon" />
-      </div>
-
-      <div
-          onClick={handleClick}
-          className="flex cursor-pointer items-center justify-center rounded-[12px] w-[53px] h-[54px] bg-purple-gradient"
-        >
-          <Image src={UpArrow} alt="up_arrow" />
+      {!searchQuery && (
+        <div className="absolute right-[60px] inset-y-0 flex items-center">
+          <Image src={VoiceIcon} alt="voice_icon" />
         </div>
+      )}
+      <div
+        onClick={handleClick}
+        className="flex cursor-pointer items-center justify-center rounded-[12px] w-[53px] h-[54px] bg-purple-gradient"
+      >
+        <Image src={UpArrow} alt="up_arrow" />
+      </div>
     </div>
   );
 }
