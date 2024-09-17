@@ -27,7 +27,7 @@ function Chat() {
 }
 
   return (
-    <div className="flex gap-[20px] lg:p-[20px] p-[10px] justify-between w-full">
+    <div className="flex gap-[20px] lg:p-[20px] p-[10px] mb-[40px] justify-between w-full">
       <div className="flex flex-col gap-[30px]">
         {chatData.searchValues.map((searchValue, index) => (
           <React.Fragment key={index}>
@@ -52,7 +52,7 @@ function Chat() {
                   </div>
                 )}
                 {chatData.responses[index]?.sources
-                  ?.slice(0, 3)
+                  ?.slice(0, 4)
                   .map((source, sourceIndex) => (
                     <SourcesCard
                       key={sourceIndex}
@@ -62,7 +62,7 @@ function Chat() {
                       url={source.url}
                     />
                   ))}
-                {chatData.responses[index]?.sources && (
+                {/* {chatData.responses[index]?.sources && (
                   <div className="flex flex-col rounded-[8px] gap-[12px] min-w-[186.25px] max-w-[186.25px] h-[150px] p-[16px] bg-transparent border border-dotted border-[rgba(255,255,255,0.10)]">
                     <div className="flex w-full mb-[45px] items-center justify-between">
                       <span className="text-[14px] font-[avenir] font-normal text-[rgba(255,255,255,0.80)]">
@@ -77,7 +77,7 @@ function Chat() {
                     </div>
                     <div className="border border-[rgba(255,255,255,0.10)] w-full"></div>
                   </div>
-                )}
+                )} */}
               </div>
             </div>
             <div className="flex items-center flex-col gap-[10px]">
@@ -95,7 +95,7 @@ function Chat() {
                 text={chatData.responses[index]?.content || ""}
               />
             </div>
-            <div className="flex flex-col gap-[10px]">
+            {/* <div className="flex flex-col gap-[10px]">
               <div className="flex items-center gap-[7px]">
                 <Image src={InfoIcon} alt="info_icon" width={40} height={40} />
                 <h3 className="text-white font-normal text-[18px]">Related</h3>
@@ -103,7 +103,7 @@ function Chat() {
               {collapserData.map((item, index) => (
                 <Collapser key={index} text={item.text} />
               ))}
-            </div>
+            </div> */}
             <span className="border border-dotted border-[rgba(255,255,255,0.10)] w-full"></span>
 
             <div className="flex border border-[rgba(255,255,255,0.08)] p-[8px_10px_8px_8px] bg-[#141823] fixed bottom-5 ml-[-12px] lg:ml-[0px] items-center w-full lg:w-[775px] rounded-[20px] lg:gap-[10px] gap-[5px]">

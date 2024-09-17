@@ -72,7 +72,7 @@ function Search() {
       <h2 className="text-white lg:text-[34px] text-[24px] font-medium">
         Unlock Every Answer
       </h2>
-      <div className="flex order-2 lg:order-1 w-full lg:w-[660px] items-center justify-center mt-[30px]">
+      <div className="flex order-2 lg:order-1 w-full p-2 lg:p-0 lg:w-[660px] items-center justify-center mt-[30px]">
         <InputWithVoice />
       </div>
       <div className="flex order-1 lg:order-2 w-full lg:w-[660px] mt-[30px] items-center justify-center flex-wrap gap-[10px]">

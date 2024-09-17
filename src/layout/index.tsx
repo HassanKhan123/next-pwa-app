@@ -19,7 +19,7 @@ function Layout({ children }: LayoutProps) {
   return (
     <>
       <div className="flex relative">
-        <Image src={BackgroundGlowTop} alt="bg_glow" className="hidden w-full lg:block absolute top-0" />
+        <Image src={BackgroundGlowTop} alt="bg_glow" className="hidden w-full lg:flex absolute top-0" />
         <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <div
         style={{backgroundColor: "#0D121C"}}
