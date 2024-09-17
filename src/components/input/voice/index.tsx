@@ -41,7 +41,7 @@ function InputWithVoice() {
         ...prevChatData,
         responses: [
           ...prevChatData.responses,
-          { sources, content: "" }, 
+          { sources, content: "" , timestamp: new Date().toISOString()}, 
         ],
       }));
     };

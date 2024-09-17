@@ -28,7 +28,7 @@ function Chat() {
 
   return (
     <div className="flex gap-[20px] lg:p-[20px] min-h-screen p-[10px] mb-[40px] justify-between w-full">
-      <div className="flex flex-col gap-[30px]">
+      <div className="flex w-full flex-col gap-[30px]">
         {chatData.searchValues.map((searchValue, index) => (
           <React.Fragment key={index}>
             <h1 className="text-white text-[28px] font-normal font-[avenir]">
@@ -80,7 +80,7 @@ function Chat() {
                 )} */}
               </div>
             </div>
-            <div className="flex items-center flex-col gap-[10px]">
+            <div className="flex items-start flex-col gap-[10px]">
               <div className="flex self-start items-center gap-[7px]">
                 <Image
                   src={TarsLogoWithoutExplorer}

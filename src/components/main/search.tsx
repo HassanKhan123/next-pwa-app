@@ -31,7 +31,7 @@ function Search() {
   const router = useRouter();
   const [, setChatData] = useAtom(chatDataAtom);
 
-  const handleSuggestionCardClick = useCallback(async (message: string) => {
+  const handleSuggestionCardClick = async (message: string) => {
     const onContentReceived = (newContent: string) => {
       setChatData((prevData) => {
         const lastResponseIndex = prevData.responses.length - 1;
@@ -54,7 +54,7 @@ function Search() {
         ...prevChatData,
         responses: [
           ...prevChatData.responses,
-          { sources, content: "" },
+          { sources, content: "", timestamp: new Date().toISOString() },
         ],
       }));
     };
@@ -64,7 +64,7 @@ function Search() {
     } catch (error) {
       console.error("Error during postData call:", error);
     }
-  }, [setChatData]);
+  }
 
   return (
     <div className="flex flex-col h-[85vh] justify-start lg:justify-center items-center">
@@ -86,8 +86,8 @@ function Search() {
                 ...prev,
                 searchValues: [...prev.searchValues, suggestion.heading], 
               }));
-              handleSuggestionCardClick(suggestion.heading)
               router.push("/chat");
+              handleSuggestionCardClick(suggestion.heading)
             }}
           />
         ))}
