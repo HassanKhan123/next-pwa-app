@@ -18,10 +18,10 @@ function SuggestionCard({heading,paragraph,navigateToChat}:SuggestionCardProps) 
         width={40}
         height={40}
       />
-      <span className="text-white text-[16px] font-[avenir] font-normal">
+      <span className="text-white text-[16px] font-roboto font-normal">
         {heading}
       </span>
-      <span className="text-[rgba(255,255,255,0.40)] text-[14px] font-normal font-[avenir]">
+      <span className="text-[rgba(255,255,255,0.40)] text-[14px] font-normal font-roboto">
        {paragraph}
       </span>
     </div>

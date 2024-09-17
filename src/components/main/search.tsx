@@ -67,12 +67,12 @@ function Search() {
   }
 
   return (
-    <div className="flex flex-col h-[85vh] justify-start lg:justify-center items-center">
+    <div className="flex flex-col h-[85vh] p-2 mt-[40px] lg:mt-[0px] justify-start lg:justify-center items-center">
       <Image src={Unlock} alt="unlock" />
-      <h2 className="text-white lg:text-[34px] text-[24px] font-medium">
+      <h2 className="text-white lg:text-[34px] uppercase text-[24px] font-medium">
         Unlock Every Answer
       </h2>
-      <div className="flex order-2 lg:order-1 w-full p-2 lg:p-0 lg:w-[660px] items-center justify-center mt-[30px]">
+      <div className="flex order-2 lg:order-1 w-full border border-[rgba(255,255,255,0.08)] bg-[#141823] lg:border-none lg:bg-transparent p-[8px_10px_8px_8px] rounded-[20px] lg:p-0 lg:w-[660px] items-center justify-center mt-[30px]">
         <InputWithVoice />
       </div>
       <div className="flex order-1 lg:order-2 w-full lg:w-[660px] mt-[30px] items-center justify-center flex-wrap gap-[10px]">

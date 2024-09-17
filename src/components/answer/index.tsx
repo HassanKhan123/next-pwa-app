@@ -45,14 +45,14 @@ function AnswerCard({isLoading, text}:AnswerCardProps) {
     <Skeleton count={3} highlightColor="#803CFF" /> :
     <>
       <div className="flex gap-[15px] items-center">
-        <span className="text-[18px] bg-gradient-to-r from-[#A93CFF] to-[#7A3CFF] bg-clip-text text-transparent font-bold font-[avenir]">
+        <span className="text-[18px] bg-gradient-to-r from-[#A93CFF] to-[#7A3CFF] bg-clip-text text-transparent font-bold font-roboto">
           TARS
         </span>
-        <span className="text-[16px] font-normal font-[avenir] text-[#D9D9D94D]">
+        <span className="text-[16px] font-normal font-roboto text-[#D9D9D94D]">
           11sec now
         </span>
       </div>
-      <div className="text-[16px] font-normal text-white font-[avenir]">
+      <div className="text-[16px] font-normal text-white font-roboto">
         {/* The current price of Solana (SOL) is approximately $139.98 USD, with a
         24-hour trading volume of about $2.27 billion USD. Over the past 24
         hours, the price has seen a decline of roughly 3.82% */}
@@ -60,13 +60,13 @@ function AnswerCard({isLoading, text}:AnswerCardProps) {
        <MarkdownRenderer text={text} />
       </div>
       <div className="flex gap-[10px] items-center">
-        <div   onClick={handleRebuild} className="flex gap-[6px] shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center">
+        <div   onClick={handleRebuild} className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center">
           <Image src={ReloadIcon} alt="reload_icon" width={16} height={16} />
-          <span className="text-[12px] cursor-pointer font-[avenir] font-medium text-[rgba(255,255,255,0.40)]">
+          <span className="text-[12px] font-roboto font-medium text-[rgba(255,255,255,0.40)]">
             Rebuild
           </span>
         </div>
-        <div className="flex gap-[6px] shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center">
+        <div className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center">
           <Image
             src={AttachmentIcon}
             alt="attachment_icon"
@@ -74,10 +74,10 @@ function AnswerCard({isLoading, text}:AnswerCardProps) {
             height={16}
           />
         </div>
-        <div className="flex gap-[6px] shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center">
+        <div className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center">
           <Image src={SaveIcon} alt="save_icon" width={16} height={16} />
         </div>
-        <div className="flex gap-[6px] shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center">
+        <div className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center">
           <Image src={ShareIcon} alt="share_icon" width={16} height={16} />
         </div>
       </div>

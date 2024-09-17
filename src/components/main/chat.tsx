@@ -27,11 +27,11 @@ function Chat() {
 }
 
   return (
-    <div className="flex gap-[20px] lg:p-[20px] min-h-screen p-[10px] mb-[40px] justify-between w-full">
-      <div className="flex w-full flex-col gap-[30px]">
+    <div className="flex gap-[20px] lg:p-[20px] min-h-screen p-[10px] lg:mb-[40px] mb-[80px] justify-between w-full">
+      <div className="flex w-full flex-col lg:gap-[30px] gap-[20px]">
         {chatData.searchValues.map((searchValue, index) => (
           <React.Fragment key={index}>
-            <h1 className="text-white text-[28px] font-normal font-[avenir]">
+            <h1 className="text-white text-[28px] uppercase font-normal font-roboto">
               {searchValue}
               {!searchValue && <Skeleton count={1} highlightColor="#803CFF" />}
             </h1>
