@@ -27,7 +27,7 @@ function Chat() {
 }
 
   return (
-    <div className="flex gap-[20px] lg:p-[20px] p-[10px] mb-[40px] justify-between w-full">
+    <div className="flex gap-[20px] lg:p-[20px] min-h-screen p-[10px] mb-[40px] justify-between w-full">
       <div className="flex flex-col gap-[30px]">
         {chatData.searchValues.map((searchValue, index) => (
           <React.Fragment key={index}>
