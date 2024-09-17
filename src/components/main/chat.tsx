@@ -1,8 +1,7 @@
-import React from "react";
+import React, {useEffect} from "react";
 import ImagesDropdown from "../dropdown/images";
 import VideoDropdown from "../dropdown/videos";
 import InputWithVoice from "../input/voice";
-import UpArrow from "../../assests/up_arrow.svg";
 import Image from "next/image";
 import Collapser from "../collapser";
 import InfoIcon from "../../assests/info_icon.svg";
@@ -16,15 +15,17 @@ import { useAtom } from "jotai";
 import { chatDataAtom } from "@/atoms";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import DummyImage from "../../assests/dummy_source_card_image.png";
 import { redirect } from "next/navigation";
 
 function Chat() {
   const [chatData] = useAtom(chatDataAtom);
 
-  if(chatData.searchValues.length === 0) {
-    redirect("/");
-}
+  useEffect(() =>{
+    if(chatData.searchValues.length === 0) {
+      redirect("/");
+  }
+  }, [])
+
 
   return (
     <div className="flex gap-[20px] lg:p-[20px] min-h-screen p-[10px] lg:mb-[40px] mb-[80px] justify-between w-full">
@@ -58,7 +59,6 @@ function Chat() {
                       key={sourceIndex}
                       text={source.text}
                       name={source.title}
-                      image={DummyImage}
                       url={source.url}
                     />
                   ))}
@@ -104,7 +104,7 @@ function Chat() {
                 <Collapser key={index} text={item.text} />
               ))}
             </div> */}
-            <span className="border border-dotted border-[rgba(255,255,255,0.10)] w-full"></span>
+            <span className="border border-dotted border-[rgba(255,255,255,0.10)] w-full max-w-full lg:max-w-[775px]"></span>
 
             <div className="flex border border-[rgba(255,255,255,0.08)] p-[8px_10px_8px_8px] bg-[#141823] fixed bottom-5 ml-[-12px] lg:ml-[0px] items-center w-full lg:w-[775px] rounded-[20px] lg:gap-[10px] gap-[5px]">
               <InputWithVoice />

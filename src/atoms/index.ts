@@ -7,4 +7,3 @@ export const chatDataAtom = atom<{
 }>(
   { searchValues: [], responses: [] }
 );
-

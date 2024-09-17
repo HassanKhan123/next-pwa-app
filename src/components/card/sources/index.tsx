@@ -1,11 +1,9 @@
 import React from "react";
-import Image from "next/image";
 import { StaticImageData } from 'next/image';
 
 interface SourceCardProps {
   text: string;
   name: string;
-  image: string | StaticImageData;
   url: string;
 }
 
@@ -17,7 +15,7 @@ const truncateText = (text: string, maxLength: number) => {
 };
 
 
-function SourcesCard({ text, name, image, url }: SourceCardProps) {
+function SourcesCard({ text, name, url }: SourceCardProps) {
 
   const handleCardClick = () => {
     window.open(url, "_blank"); 
@@ -30,15 +28,8 @@ function SourcesCard({ text, name, image, url }: SourceCardProps) {
       </span>
       <div className="border border-[rgba(255,255,255,0.10)] w-full"></div>
       <div className="flex gap-[10px] items-center w-full">
-        <Image
-          src={image}
-          alt="dummy"
-          className="rounded-full"
-          width={28}
-          height={28}
-        />
         <span className="text-[14px] font-bold font-roboto text-[rgba(255,255,255,0.80)]">
-        {truncateText(name, 10)}
+        {truncateText(name, 15)}
         </span>
       </div>
     </div>
