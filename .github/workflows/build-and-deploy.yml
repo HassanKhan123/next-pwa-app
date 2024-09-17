@@ -22,10 +22,14 @@ jobs:
       - name: Set environment variables
         run: |
           if [ "${{ github.ref }}" == "refs/heads/dev" ]; then
+          echo "NEXT_PUBLIC_NODE_ENV=${{ secrets.STAGE_NEXT_PUBLIC_NODE_ENV }}" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.STAGE_NEXT_PUBLIC_BACKEND_URL  }}" >> $GITHUB_ENV
           echo "SERVER_HOST=${{ secrets.DEV_SERVER_HOST }}" >> $GITHUB_ENV
           echo "SERVER_USER=${{ secrets.DEV_SERVER_USER }}" >> $GITHUB_ENV
           echo "BUILD_FOLDER=.next" >> $GITHUB_ENV
           elif [ "${{ github.ref }}" == "refs/heads/main" ]; then
+          echo "NEXT_PUBLIC_NODE_ENV=${{ secrets.PROD_NEXT_PUBLIC_NODE_ENV }}" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.PROD_NEXT_PUBLIC_BACKEND_URL }}" >> $GITHUB_ENV
           echo "SERVER_HOST=${{ secrets.PROD_SERVER_HOST }}" >> $GITHUB_ENV
           echo "SERVER_USER=${{ secrets.PROD_SERVER_USER }}" >> $GITHUB_ENV
           echo "BUILD_FOLDER=.next" >> $GITHUB_ENV
@@ -97,4 +101,4 @@ jobs:
           username: ${{ env.SERVER_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
-            pm2 restart 0
+            pm2 restart all
