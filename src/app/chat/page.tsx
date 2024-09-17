@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import Chat from '@/components/pages/Chat'
+import Chat from '@/components/main/chat'
 
 function page() {
   return (

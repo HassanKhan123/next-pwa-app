@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Provider as JotaiProvider } from "jotai";
-import Layout from "../layout/Layout";
+import Layout from "../layout";
 import AppKitProvider from "@/context";
 
 const inter = Inter({ subsets: ["latin"] });

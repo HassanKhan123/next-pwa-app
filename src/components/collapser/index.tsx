@@ -14,7 +14,7 @@ function Collapser({ text }: CollapserProps) {
   };
   return (
     <div
-      className={`flex items-center justify-between gap-[15px] bg-[rgba(255,255,255,0.05)] w-full rounded-[18px] p-[12px_16px_12px_16px] transition-all duration-300 ${
+      className={`flex items-center justify-between gap-[15px] border border border-[rgba(255,255,255,0.08)] bg-transparent w-full rounded-[8px] p-[12px_16px_12px_16px] transition-all duration-300 ${
         isCollapserOpen ? "h-[200px]" : "h-[68px] lg:h-[46px]"
       }`}
     >

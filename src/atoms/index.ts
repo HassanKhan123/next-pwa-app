@@ -1,6 +1,10 @@
-"use client";
 import { atom } from 'jotai';
 
-export const searchAtom = atom<string>('');
 
+export const chatDataAtom = atom<{
+  searchValues: string[];
+  responses: { sources: { title: string; url: string; text: string }[]; content: string }[];
+}>(
+  { searchValues: [], responses: [] }
+);
 

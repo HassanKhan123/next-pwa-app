@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SearchIcon from "../../assests/search_icon.svg";
+import SearchIcon from "../../../assests/search_icon.svg";
 import Image from "next/image";
 
 function SearchInput() {
@@ -18,7 +18,7 @@ function SearchInput() {
         placeholder="Search..."
         value={searchQuery}
         onChange={handleInputChange}
-        className="text-white bg-[#140926] pl-[50px] rounded-full h-[54px] w-full border border-[rgba(255,255,255,0.10)]"
+        className="text-white bg-[#1B1B30] pl-[50px] rounded-[12px] h-[54px] w-full border border-[rgba(255,255,255,0.10)]"
       />
     </div>
   );
