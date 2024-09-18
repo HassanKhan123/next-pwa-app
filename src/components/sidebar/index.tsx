@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import CrossLogo from "../../assests/cross_logo.svg";
 import Image from "next/image";
 import SearchInput from "../input/search";
-import { chatDataAtom } from "@/atoms";
+import { chatDataAtom, bookmarkAtom, historyAtom } from "@/atoms";
 import { useAtom } from "jotai";
-import { formatDistanceToNow } from "date-fns";
+import { postMessage } from "@/services/api/api";
+import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { groupByDate } from "@/utils/common";
 
 interface SidebarProps {
   isSidebarOpen: boolean;
@@ -13,15 +16,69 @@ interface SidebarProps {
 
 function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
   const [activeTab, setActiveTab] = useState("History");
-  const [chatData] = useAtom(chatDataAtom);
+  const [history, setHistory] = useAtom(historyAtom);
+  const [chatData, setChatData] = useAtom(chatDataAtom);
+  const [bookmarks] = useAtom(bookmarkAtom);
+  const router = useRouter();
+  const pathName = usePathname();
 
   const handleTabClick = (tabName: string) => {
     setActiveTab(tabName);
   };
 
+  const handleSearch = async (message: string) => {
+    if (pathName !== "/chat") {
+      await router.push("/chat");
+    }
+
+    const timestamp = new Date().toISOString();
+
+    setHistory((prev) => [...prev, { value: message, timestamp }]);
+
+    setChatData((prev) => ({
+      ...prev,
+      searchValues: [...prev.searchValues, message],
+    }));
+
+    const onContentReceived = (newContent: string) => {
+      setChatData((prevData) => {
+        const lastResponseIndex = prevData.responses.length - 1;
+
+        return {
+          ...prevData,
+          responses: prevData.responses.map((response, index) =>
+            index === lastResponseIndex
+              ? { ...response, content: response.content + newContent }
+              : response
+          ),
+        };
+      });
+    };
+
+    const onParsedChunkReceived = (parsedChunkData: any) => {
+      const sources = parsedChunkData?.sources || [];
+
+      setChatData((prevChatData) => ({
+        ...prevChatData,
+        responses: [
+          ...prevChatData.responses,
+          { sources, content: "", timestamp: new Date().toISOString() },
+        ],
+      }));
+    };
+
+    try {
+      await postMessage(message, onContentReceived, onParsedChunkReceived);
+    } catch (error) {
+      console.error("Error during postData call:", error);
+    }
+  };
+
+  const groupedHistory = groupByDate(history);
+
   return (
     <div
-      className={`absolute z-20 lg:z-0 lg:static w-full rounded-lg lg:w-[25rem] h-full bg-[#1B1B30] text-white transform ${
+      className={`absolute z-20 lg:z-0 lg:static w-full rounded-lg lg:w-[25rem] h-full bg-custom-purple text-white transform ${
         isSidebarOpen
           ? "translate-x-0 flex flex-col"
           : "-translate-x-full hidden"
@@ -38,9 +95,9 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
         <div className="rounded-[12px] p-[4px] gap-[10px] h-[56px] flex items-center bg-[#0D121C]">
           <div
             onClick={() => handleTabClick("History")}
-            className={`cursor-pointer lg:w-[121px] text-[rgba(255,255,255,0.80)] w-[50%] h-[48px] p-[15px_10px_15px_10px] flex items-center justify-center text-[16px] font-medium rounded-[12px] border transition-all duration-300 ${
+            className={`cursor-pointer lg:w-[121px] text-[rgba(255,255,255,0.80)] w-[50%] h-[48px] p-[15px_10px_15px_10px] flex items-center justify-center text-[16px] font-normal rounded-[12px] border transition-all duration-300 ${
               activeTab === "History"
-                ? "bg-[#1F0E3C] border-[#863CFF33]"
+                ? "bg-[#1F0E3C] border-custom-purple-border"
                 : "bg-bg-[#0D121C] border-transparent"
             }`}
           >
@@ -48,9 +105,9 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
           </div>
           <div
             onClick={() => handleTabClick("Bookmark")}
-            className={`w-[50%] flex items-center text-[rgba(255,255,255,0.80)] h-[48px] justify-center text-[16px] p-[15px_10px_15px_10px] font-medium cursor-pointer rounded-[12px] border transition-all duration-300 ${
+            className={`w-[50%] flex items-center text-[rgba(255,255,255,0.80)] h-[48px] justify-center text-[16px] p-[15px_10px_15px_10px] font-normal cursor-pointer rounded-[12px] border transition-all duration-300 ${
               activeTab === "Bookmark"
-                ? "bg-[#1F0E3C] border-[#863CFF33]"
+                ? "bg-[#1F0E3C] border-custom-purple-border"
                 : "bg-[#0D121C] border-transparent"
             }`}
           >
@@ -60,28 +117,31 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
         <SearchInput />
 
         {activeTab === "History" && (
-          <div className="flex flex-col gap-2 mt-4 overflow-y-auto">
-            {chatData.searchValues.length > 0 ? (
-              [...chatData.searchValues].reverse().map((searchValue, index) => {
-                const reversedIndex = chatData.searchValues.length - 1 - index;
-                return (
+          <div className="flex flex-col gap-2 overflow-y-auto">
+            {Object.keys(groupedHistory).length > 0 ? (
+              Object.entries(groupedHistory).map(
+                ([dateLabel, values], index) => (
                   <div
+                    className="flex cursor-pointer flex-col gap-[10px]"
                     key={index}
-                    className="bg-[#252540] p-[15px] flex flex-col gap-[5px] rounded-lg text-white"
                   >
-                    <p className="text-[12px] text-gray-400">
-                      {chatData?.responses[reversedIndex]?.timestamp &&
-                        formatDistanceToNow(
-                          new Date(chatData.responses[reversedIndex].timestamp),
-                          {
-                            addSuffix: true,
-                          }
-                        )}
-                    </p>
-                    <p className="text-[14px]">{searchValue}</p>
+                    <span className="text-[15px] text-[rgba(169,60,255,1)] font-normal font-roboto rounded-[6px] bg-[#222337] shadow-custom-inset p-[4px_10px_4px_10px] border border-[rgba(255,255,255,0.08)]">
+                      {dateLabel}
+                    </span>
+                    {values.map((value, valueIndex) => (
+                      <div
+                        key={valueIndex}
+                        onClick={() => handleSearch(value)}
+                        className="cursor-pointer p-[10px] flex flex-col rounded-lg text-white"
+                      >
+                        <p className="text-[15px] text-[rgba(242,244,247,1)] font-normal font-roboto">
+                          {value}
+                        </p>
+                      </div>
+                    ))}
                   </div>
-                );
-              })
+                )
+              )
             ) : (
               <p className="text-[14px] text-center text-[rgba(255,255,255,0.60)]">
                 No search history available.
@@ -90,10 +150,24 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
           </div>
         )}
         {activeTab === "Bookmark" && (
-          <div className="flex flex-col gap-2 mt-4 overflow-y-auto">
-            <p className="text-[14px] text-center text-[rgba(255,255,255,0.60)]">
-              No bookmarks available.
-            </p>
+          <div className="flex flex-col gap-2 overflow-y-auto">
+            {bookmarks.length > 0 ? (
+              bookmarks.map((bookmark, index) => (
+                <div
+                  key={index}
+                  onClick={() => handleSearch(bookmark)}
+                  className="bg-[#252540] cursor-pointer p-[15px] flex flex-col gap-[5px] rounded-lg text-white"
+                >
+                  <p className="text-[14px]">
+                    {index + 1}. {bookmark}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <p className="text-[14px] text-center text-[rgba(255,255,255,0.60)]">
+                No bookmarks available.
+              </p>
+            )}
           </div>
         )}
       </div>

@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import VoiceIcon from "../../../assests/voice_icon.svg";
 import Image from "next/image";
-import { chatDataAtom } from "@/atoms";
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
+import {chatDataAtom, historyAtom } from "@/atoms";
 import { postMessage } from "@/services/api/api";
 import UpArrow from "../../../assests/up_arrow.svg";
 
 function InputWithVoice() {
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
+  const [, setHistory] = useAtom(historyAtom);
   const [, setChatData] = useAtom(chatDataAtom);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,26 +53,34 @@ function InputWithVoice() {
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
+    if (event.key === "Enter" && searchQuery) {
+      setHistory((prev) => [
+        ...prev,
+        { value: searchQuery, timestamp: new Date().toISOString() },
+      ]);
       setChatData((prev) => ({
         ...prev,
         searchValues: [...prev.searchValues, searchQuery],
       }));
       router.push("/chat");
       handleSearch(searchQuery);
-      setSearchQuery("");
+      setSearchQuery(""); 
     }
   };
 
   const handleClick = () => {
     if (searchQuery) {
+      setHistory((prev) => [
+        ...prev,
+        { value: searchQuery, timestamp: new Date().toISOString() },
+      ]);
       setChatData((prev) => ({
         ...prev,
         searchValues: [...prev.searchValues, searchQuery],
       }));
       router.push("/chat");
       handleSearch(searchQuery);
-      setSearchQuery("");
+      setSearchQuery(""); 
     }
   };
 
@@ -83,10 +92,10 @@ function InputWithVoice() {
         value={searchQuery}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
-        className="bg-[#0c1019] text-white rounded-[12px] h-[56px] w-full p-[2px_6px_2px_20px] border border-[rgba(255,255,255,0.10)]"
+        className="bg-[#0c1019] font-roboto text-white rounded-[12px] h-[56px] w-full p-[2px_6px_2px_20px] border border-[rgba(255,255,255,0.10)]"
       />
       {!searchQuery && (
-        <div className="absolute right-[60px] inset-y-0 flex items-center">
+        <div className="absolute right-[60px] cursor-pointer inset-y-0 flex items-center">
           <Image src={VoiceIcon} alt="voice_icon" />
         </div>
       )}

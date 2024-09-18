@@ -1,16 +1,21 @@
-import React, {useCallback} from "react";
+import React, { useCallback } from "react";
 import Image from "next/image";
 import Unlock from "../../assests/unlock.svg";
 import InputWithVoice from "../input/voice";
 import SuggestionCard from "../card/suggestion";
 import { useRouter } from "next/navigation";
-import { chatDataAtom } from "@/atoms";
+import { chatDataAtom, historyAtom } from "@/atoms";
 import { useAtom } from "jotai";
 import { postMessage } from "@/services/api/api";
 
+interface History {
+  value: string;
+  timestamp: string;
+}
+
 const suggestions = [
   {
-    heading: "Tell me the price of Btc",
+    heading: "Tell me about Solana Blockchain",
     paragraph: "Lorem ipsum dolor sit amet, consectetur",
   },
   {
@@ -30,6 +35,7 @@ const suggestions = [
 function Search() {
   const router = useRouter();
   const [, setChatData] = useAtom(chatDataAtom);
+  const [, setHistory] = useAtom(historyAtom);
 
   const handleSuggestionCardClick = async (message: string) => {
     const onContentReceived = (newContent: string) => {
@@ -69,7 +75,7 @@ function Search() {
   return (
     <div className="flex flex-col h-[85vh] p-2 mt-[40px] lg:mt-[0px] justify-start lg:justify-center items-center">
       <Image src={Unlock} alt="unlock" />
-      <h2 className="text-white lg:text-[34px] uppercase text-[24px] font-medium">
+      <h2 className="text-white lg:text-[34px] font-geistMono uppercase text-[24px] font-normal tracking-[-0.02em]">
         Unlock Every Answer
       </h2>
       <div className="flex order-2 lg:order-1 w-full border border-[rgba(255,255,255,0.08)] bg-[#141823] lg:border-none lg:bg-transparent p-[8px_10px_8px_8px] rounded-[20px] lg:p-0 lg:w-[660px] items-center justify-center mt-[30px]">
@@ -82,12 +88,19 @@ function Search() {
             heading={suggestion.heading}
             paragraph={suggestion.paragraph}
             navigateToChat={() => {
+              setHistory((prev) => [
+                ...prev,
+                {
+                  value: suggestion.heading,
+                  timestamp: new Date().toISOString()
+                } as History
+              ]);
               setChatData((prev) => ({
                 ...prev,
                 searchValues: [...prev.searchValues, suggestion.heading], 
               }));
               router.push("/chat");
-              handleSuggestionCardClick(suggestion.heading)
+              handleSuggestionCardClick(suggestion.heading);
             }}
           />
         ))}

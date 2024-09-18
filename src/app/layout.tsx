@@ -4,6 +4,7 @@ import "./globals.css";
 import { Provider as JotaiProvider } from "jotai";
 import Layout from "../layout";
 import AppKitProvider from "@/context";
+import { ToastContainer } from "react-toastify";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
       <body className={`lg:p-[10px] p-[0px] ${inter.className}`}>
         <AppKitProvider>
           <JotaiProvider>
+            <ToastContainer />
             <Layout>{children}</Layout>
           </JotaiProvider>
         </AppKitProvider>

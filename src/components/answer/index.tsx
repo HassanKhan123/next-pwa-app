@@ -7,36 +7,28 @@ import ShareIcon from "../../assests/share_icon.svg";
 import Skeleton from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css';
 import MarkdownRenderer from "./MarkdownRenderer";
+import { bookmarkAtom } from "@/atoms";
+import { useAtom } from "jotai";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface AnswerCardProps {
   isLoading: boolean; 
   text: string;
+  searchValue: string;
 }
 
-function AnswerCard({isLoading, text}:AnswerCardProps) {
-  const [displayedText, setDisplayedText] = useState("");
-  const indexRef = useRef(0);
-
-  const handleRebuild = () => {
-    indexRef.current = 0;
-    setDisplayedText("");
-    startTypingEffect();
-  };
-
- 
-  const startTypingEffect = () => {
-    const typingSpeed = 8; 
-    const interval = setInterval(() => {
-      if (indexRef.current < text.length) {
-        const nextChar = text[indexRef.current];
-        if (nextChar !== undefined) {
-          setDisplayedText((prev) => prev + nextChar);
-          indexRef.current += 1;
-        }
-      } else {
-        clearInterval(interval);
-      }
-    }, typingSpeed);
+function AnswerCard({isLoading, text, searchValue}:AnswerCardProps) {
+  const [bookmarks, setBookmarks] = useAtom(bookmarkAtom);
+  const handleBookmark = () => {
+    setBookmarks((prevBookmarks) => [...prevBookmarks, searchValue]);
+    toast.success('Bookmark added!', {
+      position: "bottom-right",
+      autoClose: 3000, 
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+    });
   };
 
   return (
@@ -53,14 +45,11 @@ function AnswerCard({isLoading, text}:AnswerCardProps) {
         </span>
       </div>
       <div className="text-[16px] font-normal text-white font-roboto">
-        {/* The current price of Solana (SOL) is approximately $139.98 USD, with a
-        24-hour trading volume of about $2.27 billion USD. Over the past 24
-        hours, the price has seen a decline of roughly 3.82% */}
        {/* {text} */}
        <MarkdownRenderer text={text} />
       </div>
       <div className="flex gap-[10px] items-center">
-        <div   onClick={handleRebuild} className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center">
+        <div  className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center">
           <Image src={ReloadIcon} alt="reload_icon" width={16} height={16} />
           <span className="text-[12px] font-roboto font-medium text-[rgba(255,255,255,0.40)]">
             Rebuild
@@ -74,7 +63,7 @@ function AnswerCard({isLoading, text}:AnswerCardProps) {
             height={16}
           />
         </div>
-        <div className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center">
+        <div onClick={handleBookmark} className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center">
           <Image src={SaveIcon} alt="save_icon" width={16} height={16} />
         </div>
         <div className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center">

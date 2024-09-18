@@ -1,5 +1,8 @@
 import { atom } from 'jotai';
+import { atomWithStorage } from 'jotai/utils';
 
+
+export const historyAtom = atomWithStorage<{ value: string; timestamp: string }[]>('history', []);
 
 export const chatDataAtom = atom<{
   searchValues: string[];
@@ -7,3 +10,5 @@ export const chatDataAtom = atom<{
 }>(
   { searchValues: [], responses: [] }
 );
+
+export const bookmarkAtom = atomWithStorage<string[]>('bookmarks', []);

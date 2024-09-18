@@ -26,7 +26,7 @@ export const postMessage = async (
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        message: message,
+        query: message,
       }),
     });
 
