@@ -5,7 +5,6 @@ import InputWithVoice from "../input/voice";
 import Image from "next/image";
 import Collapser from "../collapser";
 import InfoIcon from "../../assests/info_icon.svg";
-import { collapserData } from "../../utils/CollapserData";
 import AnswerCard from "../answer";
 import TarsLogoWithoutExplorer from "../../assests/tars_logo_without_explorer.svg";
 import SourcesIcon from "../../assests/sources_icon.svg";
