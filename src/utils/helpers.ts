@@ -44,8 +44,18 @@ export const groupByDate = (history: { value: string; timestamp: string }[]) => 
 
 
   export const truncateText = (text: string, maxLength: number) => {
-    if (text.length > maxLength) {
-      return text.slice(0, maxLength) + '...';
+    const urlRegex = /https?:\/\/[^\s]+/g;
+  
+    // Truncate URLs in the text
+    const truncatedText = text.replace(urlRegex, (url) => {
+      return url.length > maxLength ? `${url.slice(0, maxLength)}...` : url;
+    });
+  
+    // Check if the overall text length exceeds maxLength after truncating URLs
+    if (truncatedText.length > maxLength) {
+      return truncatedText.slice(0, maxLength) + '...';
     }
-    return text;
+  
+    return truncatedText;
   };
+  

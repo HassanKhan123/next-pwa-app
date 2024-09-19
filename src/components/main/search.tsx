@@ -1,10 +1,10 @@
-import React, { useCallback } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Unlock from "../../assests/unlock.svg";
 import InputWithVoice from "../input/voice";
 import SuggestionCard from "../card/suggestion";
 import { useRouter } from "next/navigation";
-import { chatDataAtom, historyAtom } from "@/atoms";
+import { chatDataAtom, historyAtom, loadingAtom } from "@/atoms";
 import { useAtom } from "jotai";
 import { postMessage } from "@/services/api/api";
 
@@ -36,8 +36,10 @@ function Search() {
   const router = useRouter();
   const [, setChatData] = useAtom(chatDataAtom);
   const [, setHistory] = useAtom(historyAtom);
+  const [,setLoading] = useAtom(loadingAtom)
 
   const handleSuggestionCardClick = async (message: string) => {
+    setLoading(true)
     const onContentReceived = (newContent: string) => {
       setChatData((prevData) => {
         const lastResponseIndex = prevData.responses.length - 1;
@@ -69,6 +71,8 @@ function Search() {
       await postMessage(message, onContentReceived, onParsedChunkReceived);
     } catch (error) {
       console.error("Error during postData call:", error);
+    } finally {
+      setLoading(false)
     }
   }
 

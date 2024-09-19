@@ -1,3 +1,4 @@
+import exp from 'constants';
 import { atom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 
@@ -10,5 +11,7 @@ export const chatDataAtom = atom<{
 }>(
   { searchValues: [], responses: [] }
 );
+
+export const loadingAtom = atom<boolean>(false);
 
 export const bookmarkAtom = atomWithStorage<string[]>('bookmarks', []);

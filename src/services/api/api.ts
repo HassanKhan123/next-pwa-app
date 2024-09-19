@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -16,7 +17,7 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 export const postMessage = async (
   message: string,
   onContentReceived: (content: string) => void,
-  onParsedChunkReceived: (parsedChunk: any) => void
+  onParsedChunkReceived: (parsedChunk: any) => void,
 ) => {
   try {
     const response = await fetch(`${BACKEND_URL}/search/chat`, {

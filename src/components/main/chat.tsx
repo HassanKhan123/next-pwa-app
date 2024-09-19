@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ImagesDropdown from "../dropdown/images";
 import VideoDropdown from "../dropdown/videos";
 import InputWithVoice from "../input/voice";
@@ -21,6 +21,7 @@ function Chat() {
   const [chatData] = useAtom(chatDataAtom);
   const [history] = useAtom(historyAtom);
 
+
   useEffect(() => {
     if(chatData.searchValues.length === 0) {
       redirect("/");
@@ -33,6 +34,7 @@ function Chat() {
     }
   }, [chatData.searchValues]);
 
+
   return (
     <div className="flex gap-[20px] lg:p-[20px] min-h-screen p-[10px] lg:mb-[40px] mb-[80px] justify-between w-full">
       <div className="flex w-full flex-col">
@@ -42,7 +44,7 @@ function Chat() {
             name={`search-${index}`}
             key={index}
           >
-            <h1 className="text-white font-geistMono text-[28px] uppercase font-normal tracking-[-0.02em]">
+            <h1 className="text-white w-full max-w-full lg:max-w-[775px]  font-geistMono text-[28px] uppercase font-normal tracking-[-0.02em]">
             {searchValue}
             {!searchValue && <Skeleton count={1} highlightColor="#803CFF" />}
             </h1>
@@ -104,6 +106,7 @@ function Chat() {
                 isLoading={!chatData.responses[index]?.content}
                 text={chatData.responses[index]?.content || ""}
                 searchValue={searchValue}
+                time={chatData.responses[index]?.timestamp || ""}
               />
             </div>
                  {/* <div className="flex flex-col gap-[10px]">

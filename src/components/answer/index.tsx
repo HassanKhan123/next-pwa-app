@@ -1,4 +1,4 @@
-import React , {useState, useEffect, useRef}from "react";
+import React from "react";
 import Image from "next/image";
 import ReloadIcon from "../../assests/reload_icon.svg";
 import AttachmentIcon from "../../assests/attachment_icon.svg";
@@ -9,16 +9,18 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import MarkdownRenderer from "./MarkdownRenderer";
 import { bookmarkAtom } from "@/atoms";
 import { useAtom } from "jotai";
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { formatDistanceToNow } from "date-fns"; 
 
 interface AnswerCardProps {
   isLoading: boolean; 
   text: string;
   searchValue: string;
+  time: string
 }
 
-function AnswerCard({isLoading, text, searchValue}:AnswerCardProps) {
+function AnswerCard({isLoading, text, searchValue, time}:AnswerCardProps) {
   const [bookmarks, setBookmarks] = useAtom(bookmarkAtom);
   const handleBookmark = () => {
     setBookmarks((prevBookmarks) => [...prevBookmarks, searchValue]);
@@ -31,6 +33,7 @@ function AnswerCard({isLoading, text, searchValue}:AnswerCardProps) {
     });
   };
 
+ 
   return (
     <div className="flex w-full max-w-full lg:max-w-[775px] flex-col bg-[rgba(255,255,255,0.025)] border border-[rgba(255,255,255,0.08)] rounded-[8px] gap-[15px] p-[20px]">
     {isLoading ?
@@ -41,7 +44,7 @@ function AnswerCard({isLoading, text, searchValue}:AnswerCardProps) {
           TARS
         </span>
         <span className="text-[16px] font-normal font-roboto text-[#D9D9D94D]">
-          11sec now
+         {time && formatDistanceToNow(new Date(time), { addSuffix: true })}
         </span>
       </div>
       <div className="text-[16px] font-normal text-white font-roboto">
