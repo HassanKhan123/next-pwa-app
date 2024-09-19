@@ -7,7 +7,8 @@ import { useAtom } from "jotai";
 import { postMessage } from "@/services/api/api";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
-import { groupByDate } from "@/utils/common";
+import { groupByDate } from "@/utils/helpers";
+import cx from "classnames";
 
 interface SidebarProps {
   isSidebarOpen: boolean;
@@ -30,6 +31,8 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
     if (pathName !== "/chat") {
       await router.push("/chat");
     }
+    
+    toggleSidebar();
 
     const timestamp = new Date().toISOString();
 
@@ -72,17 +75,20 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
     } catch (error) {
       console.error("Error during postData call:", error);
     }
+
   };
 
   const groupedHistory = groupByDate(history);
 
   return (
     <div
-      className={`absolute z-20 lg:z-0 lg:static w-full rounded-lg lg:w-[25rem] h-full bg-custom-purple text-white transform ${
-        isSidebarOpen
-          ? "translate-x-0 flex flex-col"
-          : "-translate-x-full hidden"
-      } transition-transform duration-300 ease-in-out pt-[30px] pl-[20px] pb-[20px] pr-[20px]`}
+      className={cx(
+        "absolute z-20 lg:z-0 lg:static w-full rounded-lg lg:w-[25rem] h-full bg-custom-purple text-white transform transition-transform duration-300 ease-in-out pt-[30px] pl-[20px] pb-[20px] pr-[20px]",
+        {
+          "translate-x-0 flex flex-col": isSidebarOpen,
+          "-translate-x-full hidden": !isSidebarOpen,
+        }
+      )}
     >
       <div className="flex flex-col gap-[20px]">
         <button
@@ -95,21 +101,25 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
         <div className="rounded-[12px] p-[4px] gap-[10px] h-[56px] flex items-center bg-[#0D121C]">
           <div
             onClick={() => handleTabClick("History")}
-            className={`cursor-pointer lg:w-[121px] text-[rgba(255,255,255,0.80)] w-[50%] h-[48px] p-[15px_10px_15px_10px] flex items-center justify-center text-[16px] font-normal rounded-[12px] border transition-all duration-300 ${
-              activeTab === "History"
-                ? "bg-[#1F0E3C] border-custom-purple-border"
-                : "bg-bg-[#0D121C] border-transparent"
-            }`}
+            className={cx(
+              "cursor-pointer lg:w-[121px] w-[50%] h-[48px] p-[15px_10px_15px_10px] flex items-center justify-center text-[16px] font-normal rounded-[12px] border transition-all duration-300",
+              {
+                "bg-[#1F0E3C] border-custom-purple-border": activeTab === "History",
+                "bg-[#0D121C] border-transparent": activeTab !== "History",
+              }
+            )}
           >
             History
           </div>
           <div
             onClick={() => handleTabClick("Bookmark")}
-            className={`w-[50%] flex items-center text-[rgba(255,255,255,0.80)] h-[48px] justify-center text-[16px] p-[15px_10px_15px_10px] font-normal cursor-pointer rounded-[12px] border transition-all duration-300 ${
-              activeTab === "Bookmark"
-                ? "bg-[#1F0E3C] border-custom-purple-border"
-                : "bg-[#0D121C] border-transparent"
-            }`}
+            className={cx(
+              "cursor-pointer w-[50%] h-[48px] p-[15px_10px_15px_10px] flex items-center justify-center text-[16px] font-normal rounded-[12px] border transition-all duration-300",
+              {
+                "bg-[#1F0E3C] border-custom-purple-border": activeTab === "Bookmark",
+                "bg-[#0D121C] border-transparent": activeTab !== "Bookmark",
+              }
+            )}
           >
             Bookmark
           </div>

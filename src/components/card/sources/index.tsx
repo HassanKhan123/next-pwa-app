@@ -1,5 +1,5 @@
 import React from "react";
-import { truncateText } from "@/utils/common";
+import { truncateText } from "@/utils/helpers";
 
 interface SourceCardProps {
   text: string;
