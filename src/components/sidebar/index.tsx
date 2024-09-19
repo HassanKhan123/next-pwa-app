@@ -92,10 +92,9 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
     >
       <div className="flex flex-col gap-[20px]">
         <button
-          onClick={toggleSidebar}
           className="text-white focus:outline-none"
         >
-          <Image src={CrossLogo} alt="Cross_logo" />
+          <Image  onClick={toggleSidebar} src={CrossLogo} alt="Cross_logo" />
         </button>
 
         <div className="rounded-[12px] p-[4px] gap-[10px] h-[56px] flex items-center bg-[#0D121C]">

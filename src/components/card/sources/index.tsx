@@ -1,5 +1,7 @@
 import React from "react";
 import { truncateText } from "@/utils/helpers";
+import { Tooltip } from 'react-tooltip'; // Import Tooltip component
+import 'react-tooltip/dist/react-tooltip.css';
 
 interface SourceCardProps {
   text: string;
@@ -22,9 +24,11 @@ function SourcesCard({ text, name, url }: SourceCardProps) {
       </span>
       <div className="border border-[rgba(255,255,255,0.10)] w-full"></div>
       <div className="flex gap-[10px] items-center w-full">
-        <span className="text-[14px] font-medium font-roboto text-source-title-color">
+        <span    data-tooltip-id="source-name-tooltip"
+          data-tooltip-content={name} className="text-[14px] font-medium font-roboto text-source-title-color">
           {truncateText(name, 15)}
         </span>
+        <Tooltip id="source-name-tooltip"  style={{ backgroundColor: 'white', color: 'black' }} place="bottom" />
       </div>
     </div>
   );
