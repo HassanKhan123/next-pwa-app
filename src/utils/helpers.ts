@@ -17,10 +17,10 @@ export const groupByDate = (history: { value: string; timestamp: string }[]) => 
       if (isToday(responseDate)) {
         groupLabel = "Today";
       } else if (isYesterday(responseDate)) {
-        groupLabel = '1 Day Ago';
+        groupLabel = '1 day dgo';
       } else {
         const daysAgo = differenceInDays(today, responseDate);
-        groupLabel = isNaN(daysAgo) ? "Today" : `${daysAgo} Days Ago`;
+        groupLabel = isNaN(daysAgo) ? "Today" : `${daysAgo} days ago`;
       }
   
       if (!grouped[groupLabel]) {
@@ -32,8 +32,8 @@ export const groupByDate = (history: { value: string; timestamp: string }[]) => 
     const sortedGroupedEntries = Object.entries(grouped).sort(([a], [b]) => {
       if (a === "Today") return -1;
       if (b === "Today") return 1;
-      if (a === '1 Day Ago') return -1;
-      if (b === '1 Day Ago') return 1;
+      if (a === '1 day ago') return -1;
+      if (b === '1 day ago') return 1;
       const aDays = parseInt(a.split(" ")[0]);
       const bDays = parseInt(b.split(" ")[0]);
       return aDays - bDays;

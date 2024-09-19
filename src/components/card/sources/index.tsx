@@ -1,6 +1,6 @@
 import React from "react";
 import { truncateText } from "@/utils/helpers";
-import { Tooltip } from 'react-tooltip'; // Import Tooltip component
+import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
 
 interface SourceCardProps {

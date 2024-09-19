@@ -43,6 +43,8 @@ function InputWithVoice() {
           { sources, content: "", timestamp: new Date().toISOString() },
         ],
       }));
+
+      setSearchQuery(""); 
     };
 
     try {
@@ -64,7 +66,6 @@ function InputWithVoice() {
       }));
       router.push("/chat");
       handleSearch(searchQuery);
-      setSearchQuery(""); 
     }
   };
 
@@ -80,9 +81,9 @@ function InputWithVoice() {
       }));
       router.push("/chat");
       handleSearch(searchQuery);
-      setSearchQuery(""); 
     }
   };
+
 
   return (
     <div className="relative w-full flex items-center lg:gap-[10px] gap-[5px]">
