@@ -98,10 +98,7 @@ function AnswerCard({ isLoading, text, searchValue, time }: AnswerCardProps) {
               {formattedTime}
             </span>
           </div>
-          <div className="text-[16px] font-normal text-white font-roboto">
-            {/* {text} */}
             <MarkdownRenderer text={text} />
-          </div>
           <div className="flex gap-[10px] items-center">
             <div className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center transition-transform transform hover:bg-[rgba(255,255,255,0.1)] hover:scale-105">
               <Image
