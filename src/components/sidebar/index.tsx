@@ -105,15 +105,16 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
   return (
     <div
       className={cx(
-        "absolute z-20 lg:z-0 lg:static w-full rounded-lg lg:w-[25rem] h-full bg-custom-purple text-white transform transition-transform duration-300 ease-in-out pt-[30px] pl-[20px] pb-[20px] pr-[20px]",
+        "absolute hide-scrollbar z-30 lg:static w-full rounded-lg lg:w-[25rem] h-full bg-custom-purple text-white transform transition-transform duration-300 ease-in-out pt-[30px] pl-[20px] pb-[20px] pr-[20px]",
         {
           "translate-x-0 flex flex-col": isSidebarOpen,
           "-translate-x-full hidden": !isSidebarOpen,
         }
       )}
+      style={{height: "99vh", overflowY: "scroll"}}
     >
       <div className="flex flex-col gap-[20px]">
-        <button className="text-white focus:outline-none">
+        <button className="text-white z-10 focus:outline-none">
           <Image onClick={toggleSidebar} src={CrossLogo} alt="Cross_logo" />
         </button>
 
@@ -148,7 +149,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
         <SearchInput onChange={handleSearchInputChange} />
 
         {activeTab === "History" && (
-          <div className="flex flex-col gap-2 overflow-y-auto">
+          <div className="flex flex-col gap-2">
             {Object.keys(filteredHistory).length > 0 ? (
               Object.entries(filteredHistory).map(
                 ([dateLabel, values], index) => (
@@ -184,7 +185,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
           </div>
         )}
         {activeTab === "Bookmark" && (
-          <div className="flex flex-col gap-2 overflow-y-auto">
+          <div className="flex flex-col gap-2">
             {bookmarks.filter((bookmark) =>
               bookmark.toLowerCase().includes(searchQuery.toLowerCase())
             ).length > 0 ? (

@@ -11,7 +11,7 @@ import SourcesIcon from "../../assests/sources_icon.svg";
 import SourcesCard from "../card/sources";
 import ArrowRightIcon from "../../assests/right_arrow.svg";
 import { useAtom } from "jotai";
-import { chatDataAtom, historyAtom } from "@/atoms";
+import { chatDataAtom } from "@/atoms";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { redirect } from "next/navigation";
@@ -19,29 +19,29 @@ import { Element, scroller } from "react-scroll";
 
 function Chat() {
   const [chatData] = useAtom(chatDataAtom);
-  const [history] = useAtom(historyAtom);
 
 
   useEffect(() => {
     if(chatData.searchValues.length === 0) {
       redirect("/");
-    } else {
-      scroller.scrollTo(`search-${chatData.searchValues.length - 1}`, {
-        duration: 800,
-        delay: 0,
-        smooth: "easeInOutQuart",
-      });
     }
+    // } else {
+    //   scroller.scrollTo(`search-${chatData.searchValues.length - 1}`, {
+    //     duration: 800,
+    //     delay: 0,
+    //     smooth: "easeInOutQuart",
+    //   });
+    // }
   }, [chatData.searchValues]);
 
 
   return (
-    <div className="flex gap-[20px] lg:p-[20px] min-h-screen p-[10px] lg:mb-[40px] mb-[80px] justify-between w-full">
+    <div className="flex gap-[20px] z-10 lg:mt-[80px] mt-[100px] lg:p-[20px] p-[10px] justify-between w-full">
       <div className="flex w-full flex-col">
       {chatData.searchValues.map((searchValue, index) => (
-          <Element
+          <div
             className="w-full flex flex-col lg:gap-[30px] gap-[20px]"
-            name={`search-${index}`}
+            // name={`search-${index}`}
             key={index}
           >
             <h1 className="text-white w-full max-w-full lg:max-w-[775px]  font-geistMono text-[28px] uppercase font-normal tracking-[-0.02em]">
@@ -58,12 +58,11 @@ function Chat() {
                 />
                 <h3 className="text-white font-bold font-geistMono text-[18px]">Sources</h3>
               </div>
-              <div className="flex lg:flex-wrap overflow-x-scroll hide-scrollbar lg:overflow-visible w-full max-w-[350px] lg:max-w-full gap-[10px]">
+              <div className="flex flex-col lg:flex-wrap w-full max-w-[350px] lg:max-w-full gap-[10px]">
               {!chatData.responses[index]?.sources && (
-                  <div className="flex  w-full gap-[10px]">
-                    <Skeleton count={1} highlightColor="#803CFF" />
-                  </div>
+                    <Skeleton className="skeleton" count={1} highlightColor="#803CFF" />           
                 )}
+                <div className="flex lg:flex-wrap overflow-x-scroll hide-scrollbar lg:overflow-visible w-full max-w-[350px] lg:max-w-full gap-[10px]">
              {chatData.responses[index]?.sources
                   ?.slice(0, 4)
                   .map((source, sourceIndex) => (
@@ -74,6 +73,7 @@ function Chat() {
                       url={source.url}
                     />
                   ))}
+                  </div>
                      {/* {chatData.responses[index]?.sources && (
                   <div className="flex flex-col rounded-[8px] gap-[12px] min-w-[186.25px] max-w-[186.25px] h-[150px] p-[16px] bg-transparent border border-dotted border-[rgba(255,255,255,0.10)]">
                     <div className="flex w-full mb-[45px] items-center justify-between">
@@ -118,11 +118,11 @@ function Chat() {
                 <Collapser key={index} text={item.text} />
               ))}
             </div> */}
-            <span className="border mb-[20px] border-dotted border-[rgba(255,255,255,0.10)] w-full max-w-full lg:max-w-[775px]"></span>
+            <span className="border mb-[100px] lg:mb-[70px] border-dotted border-[rgba(255,255,255,0.10)] w-full max-w-full lg:max-w-[775px]"></span>
             <div className="flex border border-[rgba(255,255,255,0.08)] p-[8px_10px_8px_8px] bg-[#141823] fixed bottom-5 ml-[-12px] lg:ml-[0px] items-center w-full lg:w-[775px] rounded-[20px] lg:gap-[10px] gap-[5px]">
               <InputWithVoice />
             </div>
-          </Element>
+          </div>
         ))}
       </div>
       <div className="hidden lg:flex flex-col z-10 gap-[10px]">

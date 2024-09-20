@@ -23,6 +23,17 @@ interface AnswerCardProps {
 function AnswerCard({isLoading, text, searchValue, time}:AnswerCardProps) {
   const [bookmarks, setBookmarks] = useAtom(bookmarkAtom);
   const handleBookmark = () => {
+    if (bookmarks.includes(searchValue)) {
+      toast.info('This value is already bookmarked.', {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+      });
+      return;
+    }
+
     setBookmarks((prevBookmarks) => [...prevBookmarks, searchValue]);
     toast.success('Bookmark added!', {
       position: "bottom-right",
@@ -69,9 +80,9 @@ function AnswerCard({isLoading, text, searchValue, time}:AnswerCardProps) {
         <div onClick={handleBookmark} className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center">
           <Image src={SaveIcon} alt="save_icon" width={16} height={16} />
         </div>
-        <div className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center">
+        {/* <div className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center">
           <Image src={ShareIcon} alt="share_icon" width={16} height={16} />
-        </div>
+        </div> */}
       </div>
       </>
 }

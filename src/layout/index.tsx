@@ -19,14 +19,14 @@ function Layout({ children }: LayoutProps) {
   return (
     <>
       <div className="flex relative">
-        <Image src={BackgroundGlowTop} alt="bg_glow" className="hidden w-full lg:flex absolute top-0" />
+        <Image src={BackgroundGlowTop} alt="bg_glow" className="hidden w-full lg:flex absolute z-0 top-0" />
         <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+        <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <div
-        style={{backgroundColor: "#0D121C"}}
-          className={`flex w-full rounded-lg h-full flex-col transition-all duration-300 ease-in-out`}
+        style={{backgroundColor: "#0D121C", height: "100vh", overflowY: "scroll"}}
+          className={`flex w-full hide-scrollbar rounded-lg flex-col transition-all duration-300 ease-in-out`}
         >
-          <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-          <div className="flex flex-col z-10 min-h-screen">{children}</div>
+          <div className="flex h-full flex-col">{children}</div>
         </div>
       </div>
     </>
