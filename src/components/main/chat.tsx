@@ -24,13 +24,14 @@ function Chat() {
   useEffect(() => {
     if(chatData.searchValues.length === 0) {
       redirect("/");
-    } else {
-      scroller.scrollTo(`search-${chatData.searchValues.length - 1}`, {
-        duration: 800,
-        delay: 0,
-        smooth: "easeInOutQuart",
-      });
     }
+    // } else {
+    //   scroller.scrollTo(`search-${chatData.searchValues.length - 1}`, {
+    //     duration: 800,
+    //     delay: 0,
+    //     smooth: "easeInOutQuart",
+    //   });
+    // }
   }, [chatData.searchValues]);
 
 
@@ -38,9 +39,9 @@ function Chat() {
     <div className="flex gap-[20px] z-10 lg:mt-[80px] mt-[100px] lg:p-[20px] p-[10px] justify-between w-full">
       <div className="flex w-full flex-col">
       {chatData.searchValues.map((searchValue, index) => (
-          <Element
+          <div
             className="w-full flex flex-col lg:gap-[30px] gap-[20px]"
-            name={`search-${index}`}
+            // name={`search-${index}`}
             key={index}
           >
             <h1 className="text-white w-full max-w-full lg:max-w-[775px]  font-geistMono text-[28px] uppercase font-normal tracking-[-0.02em]">
@@ -121,7 +122,7 @@ function Chat() {
             <div className="flex border border-[rgba(255,255,255,0.08)] p-[8px_10px_8px_8px] bg-[#141823] fixed bottom-5 ml-[-12px] lg:ml-[0px] items-center w-full lg:w-[775px] rounded-[20px] lg:gap-[10px] gap-[5px]">
               <InputWithVoice />
             </div>
-          </Element>
+          </div>
         ))}
       </div>
       <div className="hidden lg:flex flex-col z-10 gap-[10px]">
