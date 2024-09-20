@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import { chatDataAtom, historyAtom , loadingAtom} from "@/atoms";
 import { postMessage } from "@/services/api/api";
+import { usePathname } from "next/navigation";
 
 
 function InputWithVoice() {
@@ -13,6 +14,7 @@ function InputWithVoice() {
   const [, setHistory] = useAtom(historyAtom);
   const [, setChatData] = useAtom(chatDataAtom);
   const [loading, setLoading] = useAtom(loadingAtom)
+  const pathname = usePathname()
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -60,6 +62,9 @@ function InputWithVoice() {
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter" && searchQuery) {
+      if(pathname == "/") {
+        router.push("/chat");
+      }
       setHistory((prev) => [
         ...prev,
         { value: searchQuery, timestamp: new Date().toISOString() },
@@ -68,13 +73,15 @@ function InputWithVoice() {
         ...prev,
         searchValues: [...prev.searchValues, searchQuery],
       }));
-      router.push("/chat");
       handleSearch(searchQuery);
     }
   };
 
   const handleClick = () => {
     if (searchQuery) {
+      if(pathname == "/") {
+        router.push("/chat");
+      }
       setHistory((prev) => [
         ...prev,
         { value: searchQuery, timestamp: new Date().toISOString() },
@@ -83,7 +90,6 @@ function InputWithVoice() {
         ...prev,
         searchValues: [...prev.searchValues, searchQuery],
       }));
-      router.push("/chat");
       handleSearch(searchQuery);
     }
   };

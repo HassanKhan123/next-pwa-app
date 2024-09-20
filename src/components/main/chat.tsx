@@ -11,7 +11,7 @@ import SourcesIcon from "../../assests/sources_icon.svg";
 import SourcesCard from "../card/sources";
 import ArrowRightIcon from "../../assests/right_arrow.svg";
 import { useAtom } from "jotai";
-import { chatDataAtom, historyAtom } from "@/atoms";
+import { chatDataAtom } from "@/atoms";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { redirect } from "next/navigation";
@@ -19,7 +19,6 @@ import { Element, scroller } from "react-scroll";
 
 function Chat() {
   const [chatData] = useAtom(chatDataAtom);
-  const [history] = useAtom(historyAtom);
 
 
   useEffect(() => {
@@ -36,7 +35,7 @@ function Chat() {
 
 
   return (
-    <div className="flex gap-[20px] lg:p-[20px] min-h-screen p-[10px] lg:mb-[40px] mb-[80px] justify-between w-full">
+    <div className="flex gap-[20px] z-10 lg:mt-[80px] mt-[100px] lg:p-[20px] p-[10px] justify-between w-full">
       <div className="flex w-full flex-col">
       {chatData.searchValues.map((searchValue, index) => (
           <Element
@@ -118,7 +117,7 @@ function Chat() {
                 <Collapser key={index} text={item.text} />
               ))}
             </div> */}
-            <span className="border mb-[20px] border-dotted border-[rgba(255,255,255,0.10)] w-full max-w-full lg:max-w-[775px]"></span>
+            <span className="border mb-[100px] lg:mb-[40px] border-dotted border-[rgba(255,255,255,0.10)] w-full max-w-full lg:max-w-[775px]"></span>
             <div className="flex border border-[rgba(255,255,255,0.08)] p-[8px_10px_8px_8px] bg-[#141823] fixed bottom-5 ml-[-12px] lg:ml-[0px] items-center w-full lg:w-[775px] rounded-[20px] lg:gap-[10px] gap-[5px]">
               <InputWithVoice />
             </div>

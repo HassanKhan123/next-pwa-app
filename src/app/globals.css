@@ -62,13 +62,23 @@ body {
     linear-gradient(white, white) 100% 50% / 4px 100% no-repeat;
 }
 
-.path {
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 50;
+  }
+}
+
+.animated-svg .path {
   stroke-dasharray: 50;
-  stroke-dashoffset: 0; 
+  stroke-dashoffset: 0;
   transition: stroke-dashoffset 0.5s linear;
 }
 
 .animated-svg:hover .path {
-  stroke-dashoffset: 50; 
+  animation: dash 2s linear infinite;
 }
+
 

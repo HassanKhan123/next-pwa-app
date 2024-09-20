@@ -77,7 +77,7 @@ function Search() {
   }
 
   return (
-    <div className="flex flex-col h-[85vh] p-2 mt-[40px] lg:mt-[0px] justify-start lg:justify-center items-center">
+    <div className="flex flex-col z-10 p-2 mt-[110px] lg:mt-[0px] h-full justify-start lg:justify-center items-center">
       <Image src={Unlock} alt="unlock" />
       <h2 className="text-white lg:text-[34px] font-geistMono uppercase text-[24px] font-normal tracking-[-0.02em]">
         Unlock Every Answer

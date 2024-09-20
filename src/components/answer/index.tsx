@@ -69,9 +69,9 @@ function AnswerCard({isLoading, text, searchValue, time}:AnswerCardProps) {
         <div onClick={handleBookmark} className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center">
           <Image src={SaveIcon} alt="save_icon" width={16} height={16} />
         </div>
-        <div className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center">
+        {/* <div className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center">
           <Image src={ShareIcon} alt="share_icon" width={16} height={16} />
-        </div>
+        </div> */}
       </div>
       </>
 }
