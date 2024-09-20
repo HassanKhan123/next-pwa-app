@@ -105,12 +105,13 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
   return (
     <div
       className={cx(
-        "absolute overflow-y-scroll  h-[99vh] hide-scrollbar z-30 lg:static w-full rounded-lg lg:w-[25rem] h-full bg-custom-purple text-white transform transition-transform duration-300 ease-in-out pt-[30px] pl-[20px] pb-[20px] pr-[20px]",
+        "absolute hide-scrollbar z-30 lg:static w-full rounded-lg lg:w-[25rem] h-full bg-custom-purple text-white transform transition-transform duration-300 ease-in-out pt-[30px] pl-[20px] pb-[20px] pr-[20px]",
         {
           "translate-x-0 flex flex-col": isSidebarOpen,
           "-translate-x-full hidden": !isSidebarOpen,
         }
       )}
+      style={{height: "99vh", overflowY: "scroll"}}
     >
       <div className="flex flex-col gap-[20px]">
         <button className="text-white z-10 focus:outline-none">

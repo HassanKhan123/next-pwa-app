@@ -23,8 +23,8 @@ function Layout({ children }: LayoutProps) {
         <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <div
-        style={{backgroundColor: "#0D121C"}}
-          className={`flex w-full h-[100vh] overflow-y-scroll hide-scrollbar rounded-lg flex-col transition-all duration-300 ease-in-out`}
+        style={{backgroundColor: "#0D121C", height: "100vh", overflowY: "scroll"}}
+          className={`flex w-full hide-scrollbar rounded-lg flex-col transition-all duration-300 ease-in-out`}
         >
           <div className="flex h-full flex-col">{children}</div>
         </div>
