@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Image from "next/image";
 import ReloadIcon from "../../assests/reload_icon.svg";
 import AttachmentIcon from "../../assests/attachment_icon.svg";
@@ -22,6 +22,7 @@ interface AnswerCardProps {
 
 function AnswerCard({isLoading, text, searchValue, time}:AnswerCardProps) {
   const [bookmarks, setBookmarks] = useAtom(bookmarkAtom);
+  const [formattedTime, setFormattedTime] = useState<string | null>(null);
   const handleBookmark = () => {
     if (bookmarks.includes(searchValue)) {
       toast.info('This value is already bookmarked.', {
@@ -44,6 +45,19 @@ function AnswerCard({isLoading, text, searchValue, time}:AnswerCardProps) {
     });
   };
 
+  useEffect(() => {
+    if(time){
+    const updateTime = () => {
+      setFormattedTime(formatDistanceToNow(new Date(time), { addSuffix: true }));
+    };
+
+    updateTime(); 
+    const interval = setInterval(updateTime, 60000); 
+
+    return () => clearInterval(interval); 
+  }
+  }, [time]);
+
  
   return (
     <div className="flex w-full max-w-full lg:max-w-[775px] flex-col bg-[rgba(255,255,255,0.025)] border border-[rgba(255,255,255,0.08)] rounded-[8px] gap-[15px] p-[20px]">
@@ -55,7 +69,7 @@ function AnswerCard({isLoading, text, searchValue, time}:AnswerCardProps) {
           TARS
         </span>
         <span className="text-[16px] font-normal font-roboto text-[#D9D9D94D]">
-         {time && formatDistanceToNow(new Date(time), { addSuffix: true })}
+        {formattedTime}
         </span>
       </div>
       <div className="text-[16px] font-normal text-white font-roboto">
