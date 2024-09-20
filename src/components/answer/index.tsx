@@ -23,6 +23,17 @@ interface AnswerCardProps {
 function AnswerCard({isLoading, text, searchValue, time}:AnswerCardProps) {
   const [bookmarks, setBookmarks] = useAtom(bookmarkAtom);
   const handleBookmark = () => {
+    if (bookmarks.includes(searchValue)) {
+      toast.info('This value is already bookmarked.', {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+      });
+      return;
+    }
+
     setBookmarks((prevBookmarks) => [...prevBookmarks, searchValue]);
     toast.success('Bookmark added!', {
       position: "bottom-right",
