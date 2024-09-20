@@ -29,7 +29,7 @@ function SourcesCard({ text, name, url }: SourceCardProps) {
           data-tooltip-content={name} className="text-[14px] font-medium font-roboto text-source-title-color">
           {truncateText(name, 15)}
         </span>
-        <Tooltip id="source-name-tooltip"  style={{ backgroundColor: 'white', color: 'black' }} place="bottom" />
+        <Tooltip id="source-name-tooltip" style={{ backgroundColor: 'rgba(27, 27, 48, 1)', color: 'white' }} place="bottom" />
       </div>
     </div>
   );
