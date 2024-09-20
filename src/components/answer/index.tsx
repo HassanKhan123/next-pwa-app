@@ -1,30 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import ReloadIcon from "../../assests/reload_icon.svg";
 import AttachmentIcon from "../../assests/attachment_icon.svg";
 import SaveIcon from "../../assests/save_icon.svg";
 import ShareIcon from "../../assests/share_icon.svg";
 import Skeleton from "react-loading-skeleton";
-import 'react-loading-skeleton/dist/skeleton.css';
+import "react-loading-skeleton/dist/skeleton.css";
 import MarkdownRenderer from "./MarkdownRenderer";
 import { bookmarkAtom } from "@/atoms";
 import { useAtom } from "jotai";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { formatDistanceToNow } from "date-fns"; 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { formatDistanceToNow } from "date-fns";
+import { Tooltip } from 'react-tooltip';
 
 interface AnswerCardProps {
-  isLoading: boolean; 
+  isLoading: boolean;
   text: string;
   searchValue: string;
-  time: string
+  time: string;
 }
 
-function AnswerCard({isLoading, text, searchValue, time}:AnswerCardProps) {
+function AnswerCard({ isLoading, text, searchValue, time }: AnswerCardProps) {
   const [bookmarks, setBookmarks] = useAtom(bookmarkAtom);
+  const [formattedTime, setFormattedTime] = useState<string | null>(null);
   const handleBookmark = () => {
     if (bookmarks.includes(searchValue)) {
-      toast.info('This value is already bookmarked.', {
+      toast.info("This value is already bookmarked.", {
         position: "bottom-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -35,57 +37,113 @@ function AnswerCard({isLoading, text, searchValue, time}:AnswerCardProps) {
     }
 
     setBookmarks((prevBookmarks) => [...prevBookmarks, searchValue]);
-    toast.success('Bookmark added!', {
+    toast.success("Bookmark added!", {
       position: "bottom-right",
-      autoClose: 3000, 
+      autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
     });
   };
 
- 
+  useEffect(() => {
+    if (time) {
+      const updateTime = () => {
+        setFormattedTime(
+          formatDistanceToNow(new Date(time), { addSuffix: true })
+        );
+      };
+
+      updateTime();
+      const interval = setInterval(updateTime, 60000);
+
+      return () => clearInterval(interval);
+    }
+  }, [time]);
+
+  const handleCopy = () => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        toast.success("Text copied to clipboard!", {
+          position: "bottom-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+        });
+      })
+      .catch(() => {
+        toast.error("Failed to copy text.", {
+          position: "bottom-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+        });
+      });
+  };
+
   return (
-    <div className="flex w-full max-w-full lg:max-w-[775px] flex-col bg-[rgba(255,255,255,0.025)] border border-[rgba(255,255,255,0.08)] rounded-[8px] gap-[15px] p-[20px]">
-    {isLoading ?
-    <Skeleton count={3} highlightColor="#803CFF" /> :
-    <>
-      <div className="flex gap-[15px] items-center">
-        <span className="text-[18px] bg-gradient-to-r from-[#A93CFF] to-[#7A3CFF] bg-clip-text text-transparent font-bold font-roboto">
-          TARS
-        </span>
-        <span className="text-[16px] font-normal font-roboto text-[#D9D9D94D]">
-         {time && formatDistanceToNow(new Date(time), { addSuffix: true })}
-        </span>
-      </div>
-      <div className="text-[16px] font-normal text-white font-roboto">
-       {/* {text} */}
-       <MarkdownRenderer text={text} />
-      </div>
-      <div className="flex gap-[10px] items-center">
-        <div  className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center">
-          <Image src={ReloadIcon} alt="reload_icon" width={16} height={16} />
-          <span className="text-[12px] font-roboto font-medium text-[rgba(255,255,255,0.40)]">
-            Rebuild
-          </span>
-        </div>
-        <div className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center">
-          <Image
-            src={AttachmentIcon}
-            alt="attachment_icon"
-            width={16}
-            height={16}
-          />
-        </div>
-        <div onClick={handleBookmark} className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center">
-          <Image src={SaveIcon} alt="save_icon" width={16} height={16} />
-        </div>
-        {/* <div className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center">
+    <div className="flex w-full mb-[60px] max-w-full lg:max-w-[775px] flex-col bg-[rgba(255,255,255,0.025)] border border-[rgba(255,255,255,0.08)] rounded-[8px] gap-[15px] p-[20px]">
+      {isLoading ? (
+        <Skeleton count={3} highlightColor="#803CFF" />
+      ) : (
+        <>
+          <div className="flex gap-[15px] items-center">
+            <span className="text-[18px] bg-gradient-to-r from-[#A93CFF] to-[#7A3CFF] bg-clip-text text-transparent font-bold font-roboto">
+              TARS
+            </span>
+            <span className="text-[16px] font-normal font-roboto text-[#D9D9D94D]">
+              {formattedTime}
+            </span>
+          </div>
+          <div className="text-[16px] font-normal text-white font-roboto">
+            {/* {text} */}
+            <MarkdownRenderer text={text} />
+          </div>
+          <div className="flex gap-[10px] items-center">
+            <div className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center transition-transform transform hover:bg-[rgba(255,255,255,0.1)] hover:scale-105">
+              <Image
+                src={ReloadIcon}
+                alt="reload_icon"
+                width={16}
+                height={16}
+              />
+              <span className="text-[12px] font-roboto font-medium text-[rgba(255,255,255,0.40)]">
+                Rebuild
+              </span>
+            </div>
+
+            <div
+              onClick={handleCopy}
+               data-tooltip-id="copy-tooltip"
+               data-tooltip-content={"Copy"}
+              className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center transition-transform transform hover:bg-[rgba(255,255,255,0.1)] hover:scale-105"
+            >
+              <Image
+                src={AttachmentIcon}
+                alt="attachment_icon"
+                width={16}
+                height={16}
+              />
+              <Tooltip id="copy-tooltip"  style={{ backgroundColor: 'rgba(27, 27, 48, 1)', color: 'white' }} place="bottom" />
+            </div>
+            <div
+              onClick={handleBookmark}
+              data-tooltip-id="bookmark-tooltip"
+               data-tooltip-content={"Bookmark"}
+              className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center transition-transform transform hover:bg-[rgba(255,255,255,0.1)] hover:scale-105"
+            >
+              <Image src={SaveIcon} alt="save_icon" width={16} height={16} />
+              <Tooltip id="bookmark-tooltip"  style={{ backgroundColor: 'rgba(27, 27, 48, 1)', color: 'white' }} place="bottom" />
+            </div>
+            {/* <div className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center">
           <Image src={ShareIcon} alt="share_icon" width={16} height={16} />
         </div> */}
-      </div>
-      </>
-}
+          </div>
+        </>
+      )}
     </div>
   );
 }

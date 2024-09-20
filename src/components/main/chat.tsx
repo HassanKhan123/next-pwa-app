@@ -118,7 +118,7 @@ function Chat() {
                 <Collapser key={index} text={item.text} />
               ))}
             </div> */}
-            <span className="border mb-[100px] lg:mb-[70px] border-dotted border-[rgba(255,255,255,0.10)] w-full max-w-full lg:max-w-[775px]"></span>
+            <span className="border mb-[100px] lg:mb-[30px] border-dotted border-[rgba(255,255,255,0.10)] w-full max-w-full lg:max-w-[775px]"></span>
             <div className="flex border border-[rgba(255,255,255,0.08)] p-[8px_10px_8px_8px] bg-[#141823] fixed bottom-5 ml-[-12px] lg:ml-[0px] items-center w-full lg:w-[775px] rounded-[20px] lg:gap-[10px] gap-[5px]">
               <InputWithVoice />
             </div>
