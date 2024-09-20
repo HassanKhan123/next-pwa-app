@@ -58,12 +58,11 @@ function Chat() {
                 />
                 <h3 className="text-white font-bold font-geistMono text-[18px]">Sources</h3>
               </div>
-              <div className="flex lg:flex-wrap overflow-x-scroll hide-scrollbar lg:overflow-visible w-full max-w-[350px] lg:max-w-full gap-[10px]">
+              <div className="flex flex-col lg:flex-wrap w-full max-w-[350px] lg:max-w-full gap-[10px]">
               {!chatData.responses[index]?.sources && (
-                  <div className="flex  w-full gap-[10px]">
-                    <Skeleton count={1} highlightColor="#803CFF" />
-                  </div>
+                    <Skeleton className="skeleton" count={1} highlightColor="#803CFF" />           
                 )}
+                <div className="flex lg:flex-wrap overflow-x-scroll hide-scrollbar lg:overflow-visible w-full max-w-[350px] lg:max-w-full gap-[10px]">
              {chatData.responses[index]?.sources
                   ?.slice(0, 4)
                   .map((source, sourceIndex) => (
@@ -74,6 +73,7 @@ function Chat() {
                       url={source.url}
                     />
                   ))}
+                  </div>
                      {/* {chatData.responses[index]?.sources && (
                   <div className="flex flex-col rounded-[8px] gap-[12px] min-w-[186.25px] max-w-[186.25px] h-[150px] p-[16px] bg-transparent border border-dotted border-[rgba(255,255,255,0.10)]">
                     <div className="flex w-full mb-[45px] items-center justify-between">
@@ -118,7 +118,7 @@ function Chat() {
                 <Collapser key={index} text={item.text} />
               ))}
             </div> */}
-            <span className="border mb-[100px] lg:mb-[40px] border-dotted border-[rgba(255,255,255,0.10)] w-full max-w-full lg:max-w-[775px]"></span>
+            <span className="border mb-[100px] lg:mb-[70px] border-dotted border-[rgba(255,255,255,0.10)] w-full max-w-full lg:max-w-[775px]"></span>
             <div className="flex border border-[rgba(255,255,255,0.08)] p-[8px_10px_8px_8px] bg-[#141823] fixed bottom-5 ml-[-12px] lg:ml-[0px] items-center w-full lg:w-[775px] rounded-[20px] lg:gap-[10px] gap-[5px]">
               <InputWithVoice />
             </div>

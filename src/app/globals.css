@@ -81,4 +81,9 @@ body {
   animation: dash 2s linear infinite;
 }
 
+.skeleton {
+  width: 100%;
+  max-width: 775px;
+  height: 150px;
+}
 
