@@ -12,7 +12,7 @@ import { useAtom } from "jotai";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { formatDistanceToNow } from "date-fns";
-import { Tooltip } from 'react-tooltip';
+import { Tooltip } from "react-tooltip";
 
 interface AnswerCardProps {
   isLoading: boolean;
@@ -24,9 +24,12 @@ interface AnswerCardProps {
 function AnswerCard({ isLoading, text, searchValue, time }: AnswerCardProps) {
   const [bookmarks, setBookmarks] = useAtom(bookmarkAtom);
   const [formattedTime, setFormattedTime] = useState<string | null>(null);
+  const markdownContent = MarkdownRenderer({ text });
+
+
   const handleBookmark = () => {
     if (bookmarks.includes(searchValue)) {
-      toast.info("This value is already bookmarked.", {
+      toast.info("This query is already bookmarked.", {
         position: "bottom-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -62,8 +65,9 @@ function AnswerCard({ isLoading, text, searchValue, time }: AnswerCardProps) {
   }, [time]);
 
   const handleCopy = () => {
+    const div = document.getElementById("markdown")
     navigator.clipboard
-      .writeText(text)
+      .writeText(div?.innerText || "")
       .then(() => {
         toast.success("Text copied to clipboard!", {
           position: "bottom-right",
@@ -84,8 +88,9 @@ function AnswerCard({ isLoading, text, searchValue, time }: AnswerCardProps) {
       });
   };
 
+
   return (
-    <div className="flex w-full mb-[60px] max-w-full lg:max-w-[775px] flex-col bg-[rgba(255,255,255,0.025)] border border-[rgba(255,255,255,0.08)] rounded-[8px] gap-[15px] p-[20px]">
+    <div className="flex w-full mb-[30px] max-w-full lg:max-w-[775px] flex-col bg-[rgba(255,255,255,0.025)] border border-[rgba(255,255,255,0.08)] rounded-[8px] gap-[15px] p-[20px]">
       {isLoading ? (
         <Skeleton count={3} highlightColor="#803CFF" />
       ) : (
@@ -98,7 +103,11 @@ function AnswerCard({ isLoading, text, searchValue, time }: AnswerCardProps) {
               {formattedTime}
             </span>
           </div>
-            <MarkdownRenderer text={text} />
+          <div
+            id="markdown"
+            className="text-white text-[16px] fon-normal font-roboto"
+            dangerouslySetInnerHTML={markdownContent}
+          />
           <div className="flex gap-[10px] items-center">
             <div className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center transition-transform transform hover:bg-[rgba(255,255,255,0.1)] hover:scale-105">
               <Image
@@ -114,8 +123,8 @@ function AnswerCard({ isLoading, text, searchValue, time }: AnswerCardProps) {
 
             <div
               onClick={handleCopy}
-               data-tooltip-id="copy-tooltip"
-               data-tooltip-content={"Copy"}
+              data-tooltip-id="copy-tooltip"
+              data-tooltip-content={"Copy"}
               className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center transition-transform transform hover:bg-[rgba(255,255,255,0.1)] hover:scale-105"
             >
               <Image
@@ -124,16 +133,30 @@ function AnswerCard({ isLoading, text, searchValue, time }: AnswerCardProps) {
                 width={16}
                 height={16}
               />
-              <Tooltip id="copy-tooltip"  style={{ backgroundColor: 'rgba(27, 27, 48, 1)', color: 'white' }} place="bottom" />
+              <Tooltip
+                id="copy-tooltip"
+                style={{
+                  backgroundColor: "rgba(27, 27, 48, 1)",
+                  color: "white",
+                }}
+                place="bottom"
+              />
             </div>
             <div
               onClick={handleBookmark}
               data-tooltip-id="bookmark-tooltip"
-               data-tooltip-content={"Bookmark"}
+              data-tooltip-content={"Bookmark"}
               className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center transition-transform transform hover:bg-[rgba(255,255,255,0.1)] hover:scale-105"
             >
               <Image src={SaveIcon} alt="save_icon" width={16} height={16} />
-              <Tooltip id="bookmark-tooltip"  style={{ backgroundColor: 'rgba(27, 27, 48, 1)', color: 'white' }} place="bottom" />
+              <Tooltip
+                id="bookmark-tooltip"
+                style={{
+                  backgroundColor: "rgba(27, 27, 48, 1)",
+                  color: "white",
+                }}
+                place="bottom"
+              />
             </div>
             {/* <div className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center">
           <Image src={ShareIcon} alt="share_icon" width={16} height={16} />
