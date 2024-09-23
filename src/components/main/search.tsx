@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-import Image from "next/image";
-import Unlock from "../../assests/unlock.svg";
+import React from "react";
 import InputWithVoice from "../input/voice";
 import SuggestionCard from "../card/suggestion";
 import { useRouter } from "next/navigation";
@@ -87,8 +85,8 @@ function Search() {
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M31.2812 8.9375H36.75L29.7188 19.0937V12.0625H24.25L31.2812 1.90625V8.9375ZM16.5938 25.3125H24.25L14.4062 39.5312V29.6875H6.75L16.5938 15.4688V25.3125ZM41.75 30.9375H36.2812V23.9062L29.25 34.0625H34.7188V41.0938L41.75 30.9375Z"
             fill="#A93CFF"
           />
