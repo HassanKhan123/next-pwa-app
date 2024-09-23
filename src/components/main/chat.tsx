@@ -130,6 +130,7 @@ function Chat() {
                   text={chatData.responses[index]?.content || ""}
                   searchValue={searchValue}
                   time={chatData.responses[index]?.timestamp || ""}
+                  id={`answer-card-${index}`}
                 />
               </div>
               {/* <div className="flex flex-col gap-[10px]">
