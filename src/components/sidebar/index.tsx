@@ -105,7 +105,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
   return (
     <div
       className={cx(
-        "absolute hide-scrollbar z-30 lg:static w-full rounded-lg lg:w-[25rem] h-full bg-custom-purple text-white transform transition-transform duration-300 ease-in-out pt-[30px] pl-[20px] pb-[20px] pr-[20px]",
+        "absolute hide-scrollbar z-30 lg:static w-full rounded-lg lg:w-[20rem] h-full bg-custom-purple text-white transform transition-transform duration-300 ease-in-out pt-[30px] pl-[10px] pb-[10px] pr-[10px]",
         {
           "translate-x-0 flex flex-col": isSidebarOpen,
           "-translate-x-full hidden": !isSidebarOpen,

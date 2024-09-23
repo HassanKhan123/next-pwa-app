@@ -77,7 +77,7 @@ function Search() {
   }
 
   return (
-    <div className="flex flex-col z-10 p-2 mt-[110px] lg:mt-[0px] h-full justify-start lg:justify-center items-center">
+    <div className="flex flex-col z-10 mt-[20px] lg:mt-[0px] p-2 h-full justify-center items-center">
       <Image src={Unlock} alt="unlock" />
       <h2 className="text-white lg:text-[34px] font-geistMono uppercase text-[24px] font-normal tracking-[-0.02em]">
         Unlock Every Answer
@@ -85,7 +85,7 @@ function Search() {
       <div className="flex order-2 lg:order-1 w-full border border-[rgba(255,255,255,0.08)] bg-[#141823] lg:border-none lg:bg-transparent p-[8px_10px_8px_8px] rounded-[20px] lg:p-0 lg:w-[660px] items-center justify-center mt-[30px]">
         <InputWithVoice />
       </div>
-      <div className="flex order-1 lg:order-2 w-full lg:w-[660px] mt-[30px] items-center justify-center flex-wrap gap-[10px]">
+      <div className="flex order-1 lg:order-2 w-full lg:w-[660px] lg:mt-[60px] mt-[70px] items-center justify-center flex-wrap gap-[10px]">
         {suggestions.map((suggestion, index) => (
           <SuggestionCard
             key={index}

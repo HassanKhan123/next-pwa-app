@@ -11,7 +11,7 @@ interface NavbarProps {
 
 function Navbar({ isSidebarOpen, toggleSidebar }: NavbarProps) {
   return (
-    <div className="flex fixed z-20 p-[20px] w-full border border-[rgba(255,255,255,0.10)] lg:border-none justify-between items-center">
+    <div className="flex fixed lg:static z-20 p-[20px] w-full border border-[rgba(255,255,255,0.10)] bg-[#0D121C] lg:bg-transparent lg:border-none justify-between items-center">
     {!isSidebarOpen && (
       <button
         onClick={toggleSidebar}
