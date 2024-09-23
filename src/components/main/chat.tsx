@@ -141,7 +141,7 @@ function Chat() {
                 <Collapser key={index} text={item.text} />
               ))}
             </div> */}
-              <span className="border mb-[35px] border-dotted border-[rgba(255,255,255,0.10)] w-full max-w-full lg:max-w-[775px]"></span>
+              <span className="border mb-[40px] border-dotted border-[rgba(255,255,255,0.10)] w-full max-w-full lg:max-w-[775px]"></span>
             </div>
           </div>
           <div className="hidden lg:flex flex-col gap-[10px]">

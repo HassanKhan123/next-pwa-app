@@ -19,7 +19,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
   const [activeTab, setActiveTab] = useState("History");
   const [history, setHistory] = useAtom(historyAtom);
   const [chatData, setChatData] = useAtom(chatDataAtom);
-  const [, setLoading] = useAtom(loadingAtom)
+  const [loading, setLoading] = useAtom(loadingAtom)
   const [bookmarks] = useAtom(bookmarkAtom);
   const router = useRouter();
   const pathName = usePathname();
@@ -34,13 +34,18 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
     setSearchQuery(input);
   };
 
+  const handleToggleSidebar = () => {
+    setSearchQuery("");
+    toggleSidebar(); 
+  };
+
+
   const handlePost = async (message: string) => {
     setLoading(true)
+    if(!loading){
     if (pathName !== "/chat") {
       await router.push("/chat");
     }
-
-    toggleSidebar();
 
     const timestamp = new Date().toISOString();
 
@@ -85,6 +90,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
     } finally {
       setLoading(false)
     }
+  }
   };
 
   const groupedHistory = groupByDate(history);
@@ -115,7 +121,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
     >
       <div className="flex flex-col gap-[20px]">
         <button className="text-white z-10 focus:outline-none">
-          <Image onClick={toggleSidebar} src={CrossLogo} alt="Cross_logo" />
+          <Image onClick={handleToggleSidebar} src={CrossLogo} alt="Cross_logo" />
         </button>
 
         <div className="rounded-[12px] p-[4px] gap-[10px] h-[56px] flex items-center bg-[#0D121C]">
@@ -146,7 +152,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
             Bookmark
           </div>
         </div>
-        <SearchInput onChange={handleSearchInputChange} />
+        <SearchInput value={searchQuery} onChange={handleSearchInputChange} />
 
         {activeTab === "History" && (
           <div className="flex flex-col gap-2">
