@@ -27,6 +27,7 @@ const config: Config = {
       borderColor: {
         'custom-purple-border': 'rgba(72, 0, 130, 1)',
       },
+      
     },
   },
   plugins: [],

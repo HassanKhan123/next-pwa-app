@@ -17,50 +17,94 @@ body {
   display: none; /* For Chrome, Safari, and Opera */
 }
 
-.card {
-  box-shadow: 0px 0px 1px #ddd;
-  position: relative;
-  cursor: pointer;
-  transition: background 0.1s;
-}
+@media (min-width: 1024px) {
+  .card {
+    box-shadow: 0px 0px 1px #ddd;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.1s;
+  }
 
-.card:hover {
-  --active: 1;
-}
+  .card:hover {
+    --active: 1;
+  }
 
-.card:after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    circle at calc(var(--x) * 1px) calc(var(--y) * 1px),
-    hsl(0 0% 100% / 0.15),
-    transparent 15vmin
-  );
-  background-attachment: fixed;
-  opacity: var(--active, 0);
-  transition: opacity 0.2s;
-  pointer-events: none;
-}
-
-.card:before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
+  .card:after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
       circle at calc(var(--x) * 1px) calc(var(--y) * 1px),
-      hsl(0 0% 100% / 0.5),
+      hsl(0 0% 100% / 0.15),
       transparent 15vmin
-    ),
-    transparent;
-  background-attachment: fixed;
-  pointer-events: none;
-  mask:
-    linear-gradient(white, white) 50% 0 / 100% 4px no-repeat,
-    linear-gradient(white, white) 50% 100% / 100% 4px no-repeat,
-    linear-gradient(white, white) 0 50% / 4px 100% no-repeat,
-    linear-gradient(white, white) 100% 50% / 4px 100% no-repeat;
+    );
+    background-attachment: fixed;
+    opacity: var(--active, 0);
+    transition: opacity 0.2s;
+    pointer-events: none;
+  }
+
+  .card:before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        circle at calc(var(--x) * 1px) calc(var(--y) * 1px),
+        hsl(0 0% 100% / 0.5),
+        transparent 15vmin
+      ),
+      transparent;
+    background-attachment: fixed;
+    pointer-events: none;
+    mask:
+      linear-gradient(white, white) 50% 0 / 100% 4px no-repeat,
+      linear-gradient(white, white) 50% 100% / 100% 4px no-repeat,
+      linear-gradient(white, white) 0 50% / 4px 100% no-repeat,
+      linear-gradient(white, white) 100% 50% / 4px 100% no-repeat;
+  }
 }
+
+
+@media (max-width: 768px) {
+  .card {
+    position: relative;
+    cursor: pointer;
+    --offset: 3px;
+    overflow: hidden;
+  }
+
+  .card:after {
+    content: "";
+    position: absolute;
+    inset: var(--offset);
+    background: inherit;
+    border-radius: inherit;
+    height: calc(100% - 2 * var(--offset));
+    width: calc(100% - 2 * var(--offset));
+  }
+
+  .card:before {
+    content: "";
+    position: absolute;
+    background: conic-gradient(transparent 270deg, rgba(72, 0, 130, 1), transparent);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    aspect-ratio: 1;
+    width: 100%;
+    animation: rotate 5s linear infinite;
+  }
+
+  @keyframes rotate {
+    from {
+      transform: translate(-50%, -50%) scale(1.4) rotate(0turn);
+    }
+    to {
+      transform: translate(-50%, -50%) scale(1.4) rotate(1turn);
+    }
+  }
+}
+
 
 @keyframes dash {
   0% {
@@ -78,12 +122,26 @@ body {
 }
 
 .animated-svg:hover .path {
-  animation: dash 2s linear infinite;
+  animation: dash 1.5s linear infinite;
 }
 
 .skeleton {
   width: 100%;
   max-width: 775px;
   height: 150px;
+}
+
+.unlock-answer-svg-container {
+  display: inline-block;
+  animation: moveUpDown 1s ease-in-out infinite;
+}
+
+@keyframes moveUpDown {
+  0%, 100% {
+      transform: translateY(0);
+  }
+  50% {
+      transform: translateY(-7px);
+  }
 }
 
