@@ -65,8 +65,9 @@ function AnswerCard({ isLoading, text, searchValue, time }: AnswerCardProps) {
   }, [time]);
 
   const handleCopy = () => {
+    const div = document.getElementById("markdown")
     navigator.clipboard
-      .writeText(text)
+      .writeText(div?.innerText || "")
       .then(() => {
         toast.success("Text copied to clipboard!", {
           position: "bottom-right",
@@ -103,6 +104,7 @@ function AnswerCard({ isLoading, text, searchValue, time }: AnswerCardProps) {
             </span>
           </div>
           <div
+            id="markdown"
             className="text-white text-[16px] fon-normal font-roboto"
             dangerouslySetInnerHTML={markdownContent}
           />
