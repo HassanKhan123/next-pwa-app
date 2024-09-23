@@ -19,13 +19,13 @@ interface AnswerCardProps {
   text: string;
   searchValue: string;
   time: string;
+  id: string; 
 }
 
-function AnswerCard({ isLoading, text, searchValue, time }: AnswerCardProps) {
+function AnswerCard({ isLoading, text, searchValue, time, id }: AnswerCardProps) {
   const [bookmarks, setBookmarks] = useAtom(bookmarkAtom);
   const [formattedTime, setFormattedTime] = useState<string | null>(null);
   const markdownContent = MarkdownRenderer({ text });
-
 
   const handleBookmark = () => {
     if (bookmarks.includes(searchValue)) {
@@ -65,7 +65,7 @@ function AnswerCard({ isLoading, text, searchValue, time }: AnswerCardProps) {
   }, [time]);
 
   const handleCopy = () => {
-    const div = document.getElementById("markdown")
+    const div = document.getElementById(`markdown-${id}`); 
     navigator.clipboard
       .writeText(div?.innerText || "")
       .then(() => {
@@ -88,7 +88,6 @@ function AnswerCard({ isLoading, text, searchValue, time }: AnswerCardProps) {
       });
   };
 
-
   return (
     <div className="flex w-full mb-[30px] max-w-full lg:max-w-[775px] flex-col bg-[rgba(255,255,255,0.025)] border border-[rgba(255,255,255,0.08)] rounded-[8px] gap-[15px] p-[20px]">
       {isLoading ? (
@@ -104,7 +103,7 @@ function AnswerCard({ isLoading, text, searchValue, time }: AnswerCardProps) {
             </span>
           </div>
           <div
-            id="markdown"
+            id={`markdown-${id}`} // Assign unique ID
             className="text-white text-[16px] fon-normal font-roboto"
             dangerouslySetInnerHTML={markdownContent}
           />
@@ -142,6 +141,7 @@ function AnswerCard({ isLoading, text, searchValue, time }: AnswerCardProps) {
                 place="bottom"
               />
             </div>
+
             <div
               onClick={handleBookmark}
               data-tooltip-id="bookmark-tooltip"
@@ -158,9 +158,6 @@ function AnswerCard({ isLoading, text, searchValue, time }: AnswerCardProps) {
                 place="bottom"
               />
             </div>
-            {/* <div className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center">
-          <Image src={ShareIcon} alt="share_icon" width={16} height={16} />
-        </div> */}
           </div>
         </>
       )}
@@ -169,3 +166,4 @@ function AnswerCard({ isLoading, text, searchValue, time }: AnswerCardProps) {
 }
 
 export default AnswerCard;
+
