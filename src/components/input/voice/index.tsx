@@ -25,6 +25,7 @@ function InputWithVoice() {
   const [, setChatData] = useAtom(chatDataAtom);
   const [loading, setLoading] = useAtom(loadingAtom)
   const pathname = usePathname()
+  let recognition: any;
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -104,8 +105,6 @@ function InputWithVoice() {
     }
   };
 
-  let recognition: any;
-
   if (typeof window !== 'undefined' && !recognition) {
     const SpeechRecognition =
       window.SpeechRecognition ||
@@ -175,13 +174,11 @@ function InputWithVoice() {
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
         disabled={loading}
-        className="bg-[#0c1019] font-roboto text-white rounded-[12px] h-[56px] w-full p-[2px_6px_2px_20px] border border-[rgba(255,255,255,0.10)]"
+        className="bg-[#0c1019] font-roboto text-white rounded-[12px] h-[56px] w-full p-[2px_40px_2px_20px] border border-[rgba(255,255,255,0.10)]"
       />
-      {!searchQuery && (
         <div onClick={handleMicClick} className="absolute right-[60px] cursor-pointer inset-y-0 flex items-center">
           <Image src={VoiceIcon} alt="voice_icon" />
         </div>
-      )}
       <div
         onClick={handleClick}
         className="flex animated-svg cursor-pointer items-center justify-center rounded-[12px] w-[53px] h-[54px] bg-purple-gradient"
