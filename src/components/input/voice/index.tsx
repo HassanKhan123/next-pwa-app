@@ -26,6 +26,8 @@ function InputWithVoice() {
   const [loading, setLoading] = useAtom(loadingAtom)
   const pathname = usePathname()
   let recognition: any;
+  let finalTranscript = "";
+  let interimTranscript = "";
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -123,47 +125,48 @@ function InputWithVoice() {
 
   const handleMicClick = () => {
     if (!recognition) return;
-
+  
     console.log('is listening', isListening);
     if (!isListening) {
       setIsListening(true);
       recognition.start();
       recognition.onend = () => {
-        recognition.start();
-        console.log('on end hit');
+        if (isListening) {
+          recognition.start();
+          console.log('on end hit');
+        }
       };
     } else {
       recognition.stop();
-      console.log('stop krdo');
+      console.log('Recording stopped');
       setIsListening(false);
     }
-
-    let finalTranscript = "";
-    let interimTranscript = "";
-
+  
     recognition.onresult = (event: any) => {
       for (let i = event.resultIndex; i < event.results.length; i++) {
         const transcript = event.results[i][0].transcript;
         console.log("transcript", transcript);
-
+  
         if (event.results[i].isFinal) {
           finalTranscript += transcript + " ";
           setSearchQuery(finalTranscript);
         } else {
           interimTranscript += transcript;
         }
-
+  
         console.log("final transcript", finalTranscript);
         console.log("interim transcript", interimTranscript);
       }
     };
-
+  
+    // Automatically stop after 15 seconds
     setTimeout(() => {
-      console.log('stop krdo 3');
+      console.log('Automatic stop after 15 seconds');
       recognition.stop();
       setIsListening(false);
     }, 15000);
   };
+  
 
   return (
     <div className="relative w-full flex items-center lg:gap-[10px] gap-[5px]">
