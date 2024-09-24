@@ -20,9 +20,10 @@ interface AnswerCardProps {
   searchValue: string;
   time: string;
   id: string; 
+  handleRebuild: () => void
 }
 
-function AnswerCard({ isLoading, text, searchValue, time, id }: AnswerCardProps) {
+function AnswerCard({ isLoading, text, searchValue, time, id, handleRebuild }: AnswerCardProps) {
   const [bookmarks, setBookmarks] = useAtom(bookmarkAtom);
   const [formattedTime, setFormattedTime] = useState<string | null>(null);
   const markdownContent = MarkdownRenderer({ text });
@@ -108,7 +109,7 @@ function AnswerCard({ isLoading, text, searchValue, time, id }: AnswerCardProps)
             dangerouslySetInnerHTML={markdownContent}
           />
           <div className="flex gap-[10px] items-center">
-            <div className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center transition-transform transform hover:bg-[rgba(255,255,255,0.1)] hover:scale-105">
+            <div onClick={handleRebuild} className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center transition-transform transform hover:bg-[rgba(255,255,255,0.1)] hover:scale-105">
               <Image
                 src={ReloadIcon}
                 alt="reload_icon"
