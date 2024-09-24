@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`lg:p-[10px] overflow-hidden p-[0px] ${inter.className}`}>
+      <body className={`lg:p-[10px] overflow-auto lg:overflow-hidden p-[0px] ${inter.className}`}>
         <AppKitProvider>
           <JotaiProvider>
             <ToastContainer />
