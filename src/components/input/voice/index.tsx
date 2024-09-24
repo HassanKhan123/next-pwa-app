@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import VoiceIcon from "../../../assests/voice_icon.svg";
+import StopIcon from "../../../assests/stop.svg"
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
@@ -8,13 +9,26 @@ import { postMessage } from "@/services/api/api";
 import { usePathname } from "next/navigation";
 
 
+declare global {
+  interface Window {
+    webkitSpeechRecognition: any;
+    mozSpeechRecognition: any;
+    msSpeechRecognition: any;
+    SpeechRecognition: any;
+  }
+}
+
 function InputWithVoice() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [isListening, setIsListening] = useState(false);
   const router = useRouter();
   const [, setHistory] = useAtom(historyAtom);
   const [, setChatData] = useAtom(chatDataAtom);
   const [loading, setLoading] = useAtom(loadingAtom)
   const pathname = usePathname()
+  let recognition: any;
+  let finalTranscript = "";
+  let interimTranscript = "";
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -94,6 +108,71 @@ function InputWithVoice() {
     }
   };
 
+  if (typeof window !== 'undefined' && !recognition) {
+    const SpeechRecognition =
+      window.SpeechRecognition ||
+      window.webkitSpeechRecognition ||
+      window.mozSpeechRecognition ||
+      window.msSpeechRecognition;
+
+    if (SpeechRecognition) {
+      recognition = new SpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.interimResults = true;
+      recognition.maxAlternatives = 1;
+      recognition.continuous = true;
+    }
+  }
+
+  const handleMicClick = () => {
+    if (!recognition) return;
+  
+    console.log('is listening', isListening);
+    if (!isListening) {
+      setIsListening(true);
+      recognition.start();
+      recognition.onend = () => {
+        if (isListening) {
+          recognition.start();
+          console.log('on end hit');
+        }
+      };
+    } else {
+      recognition.stop();
+      console.log('Recording stopped');
+      setIsListening(false);
+    }
+  
+    recognition.onresult = (event: any) => {
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript;
+        console.log("transcript", transcript);
+  
+        if (event.results[i].isFinal) {
+          finalTranscript += transcript + " ";
+          setSearchQuery(finalTranscript);
+        } else {
+          interimTranscript += transcript;
+        }
+  
+        console.log("final transcript", finalTranscript);
+        console.log("interim transcript", interimTranscript);
+      }
+    };
+
+    recognition.onerror = (event: any) => {
+      if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+        setIsListening(false); 
+      }
+    }
+  
+    setTimeout(() => {
+      console.log('Automatic stop after 15 seconds');
+      recognition.stop();
+      setIsListening(false);
+    }, 15000);
+  };
+  
 
   return (
     <div className="relative w-full flex items-center lg:gap-[10px] gap-[5px]">
@@ -104,13 +183,11 @@ function InputWithVoice() {
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
         disabled={loading}
-        className="bg-[#0c1019] font-roboto text-white rounded-[12px] h-[56px] w-full p-[2px_6px_2px_20px] border border-[rgba(255,255,255,0.10)]"
+        className="bg-[#0c1019] font-roboto text-white rounded-[12px] h-[56px] w-full p-[2px_40px_2px_20px] border border-[rgba(255,255,255,0.10)]"
       />
-      {!searchQuery && (
-        <div className="absolute right-[60px] cursor-pointer inset-y-0 flex items-center">
-          <Image src={VoiceIcon} alt="voice_icon" />
+        <div onClick={handleMicClick} className="absolute right-[65px] cursor-pointer inset-y-0 flex items-center">
+          <Image src={isListening ? StopIcon : VoiceIcon} alt="voice_icon" />
         </div>
-      )}
       <div
         onClick={handleClick}
         className="flex animated-svg cursor-pointer items-center justify-center rounded-[12px] w-[53px] h-[54px] bg-purple-gradient"

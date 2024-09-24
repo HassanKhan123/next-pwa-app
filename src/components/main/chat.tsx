@@ -82,9 +82,6 @@ if(!loading){
         <div
           className={cx(
             "flex gap-[20px] z-10 lg:p-[20px] p-[10px] justify-between w-full",
-            {
-              "lg:mt-[0px] mt-[100px]": index === 0,
-            }
           )}
           key={index}
         >
@@ -130,7 +127,7 @@ if(!loading){
                       .map((source, sourceIndex) => (
                         <SourcesCard
                           key={sourceIndex}
-                          text={source.text}
+                          text={source.text ? source.text : source.title}
                           name={source.title}
                           url={source.url}
                         />
@@ -195,7 +192,7 @@ if(!loading){
           </div>
         </div>
       ))}
-      <div className="flex border border-[rgba(255,255,255,0.08)] z-10 p-[8px_10px_8px_8px] bg-[#141823] fixed bottom-5 items-center w-full lg:ml-[20px] ml-[0px] lg:w-[775px] rounded-[20px] lg:gap-[10px] gap-[5px]">
+      <div className="flex border border-[rgba(255,255,255,0.08)] z-10 p-[8px_10px_8px_8px] bg-[#141823] fixed bottom-1 items-center w-full lg:ml-[20px] ml-[0px] lg:w-[775px] rounded-[20px] lg:gap-[10px] gap-[5px]">
         <InputWithVoice />
       </div>
     </>

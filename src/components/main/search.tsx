@@ -14,19 +14,19 @@ interface History {
 const suggestions = [
   {
     heading: "Tell me about Solana Blockchain",
-    paragraph: "Lorem ipsum dolor sit amet, consectetur",
+    paragraph: "Trending in Blockchain domain.",
   },
   {
-    heading: "Lorem ipsum dolor sit amet",
-    paragraph: "Lorem ipsum dolor sit amet, consectetur",
+    heading: "Best Ethereum Layer 2?",
+    paragraph: "Searched by 400+ users.",
   },
   {
-    heading: "Lorem ipsum dolor sit amet",
-    paragraph: "Lorem ipsum dolor sit amet, consectetur",
+    heading: "What’s the time in Peru?",
+    paragraph: "Random fun question.",
   },
   {
-    heading: "Lorem ipsum dolor sit amet",
-    paragraph: "Lorem ipsum dolor sit amet, consectetur",
+    heading: "What is the future of AI",
+    paragraph: "Something you might like.",
   },
 ];
 
@@ -75,7 +75,7 @@ function Search() {
   };
 
   return (
-    <div className="flex flex-col z-10 mt-[20px] lg:mt-[0px] p-3 h-full justify-center items-center">
+    <div className="flex flex-col z-10 p-3 h-full justify-center items-center">
       <div className="unlock-answer-svg-container">
         <svg
           width="52"
