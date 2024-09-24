@@ -11,15 +11,17 @@ import SourcesIcon from "../../assests/sources_icon.svg";
 import SourcesCard from "../card/sources";
 import ArrowRightIcon from "../../assests/right_arrow.svg";
 import { useAtom } from "jotai";
-import { chatDataAtom } from "@/atoms";
+import { chatDataAtom, loadingAtom } from "@/atoms";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { redirect } from "next/navigation";
 import cx from "classnames";
+import { postMessage } from "@/services/api/api";
 
 function Chat() {
-  const [chatData] = useAtom(chatDataAtom);
+  const [chatData, setChatData] = useAtom(chatDataAtom);
   const latestSearchRef = useRef<HTMLDivElement | null>(null);
+  const [loading, setLoading] = useAtom(loadingAtom);
 
   useEffect(() => {
     if (chatData.searchValues.length === 0) {
@@ -34,6 +36,45 @@ function Chat() {
       });
     }
   }, [chatData.searchValues]);
+
+  const handleRebuild = async (message: string, index: number) => {
+    setLoading(true);
+
+if(!loading){
+    setChatData((prevData) => ({
+      ...prevData,
+      responses: prevData.responses.map((response, idx) =>
+        idx === index ? { ...response, content: "" } : response
+      ),
+    }));
+
+    const onContentReceived = (newContent: string) => {
+      setChatData((prevData) => {
+        return {
+          ...prevData,
+          responses: prevData.responses.map((response, idx) =>
+            idx === index
+              ? { ...response, content: response.content + newContent }
+              : response
+          ),
+        };
+      });
+    };
+
+    const onParsedChunkReceived = (parsedChunkData: any) => {
+      const sources = parsedChunkData?.sources || [];
+
+    };
+
+    try {
+      await postMessage(message, onContentReceived, onParsedChunkReceived);
+    } catch (error) {
+      console.error("Error during postData call:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+  };
 
   return (
     <>
@@ -131,6 +172,9 @@ function Chat() {
                   searchValue={searchValue}
                   time={chatData.responses[index]?.timestamp || ""}
                   id={`answer-card-${index}`}
+                  handleRebuild={() =>
+                    handleRebuild(chatData.searchValues[index], index)
+                  }
                 />
               </div>
               {/* <div className="flex flex-col gap-[10px]">

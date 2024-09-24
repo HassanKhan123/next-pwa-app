@@ -75,7 +75,7 @@ function Search() {
   };
 
   return (
-    <div className="flex flex-col z-10 mt-[20px] lg:mt-[0px] p-2 h-full justify-center items-center">
+    <div className="flex flex-col z-10 mt-[20px] lg:mt-[0px] p-3 h-full justify-center items-center">
       <div className="unlock-answer-svg-container">
         <svg
           width="52"
