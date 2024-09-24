@@ -8,8 +8,19 @@ import { postMessage } from "@/services/api/api";
 import { usePathname } from "next/navigation";
 
 
+declare global {
+  interface Window {
+    webkitSpeechRecognition: any;
+    mozSpeechRecognition: any;
+    msSpeechRecognition: any;
+    SpeechRecognition: any;
+  }
+}
+
+
 function InputWithVoice() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [isListening, setIsListening] = useState(false);
   const router = useRouter();
   const [, setHistory] = useAtom(historyAtom);
   const [, setChatData] = useAtom(chatDataAtom);
@@ -94,6 +105,59 @@ function InputWithVoice() {
     }
   };
 
+  const recognition = new (window.SpeechRecognition ||
+    window.webkitSpeechRecognition ||
+    window.mozSpeechRecognition ||
+    window.msSpeechRecognition)();
+
+  recognition.lang = "en-US";
+  // recognition.finalResults = true;
+  recognition.interimResults = true;
+  recognition.maxAlternatives = 1;
+  recognition.continuous = true;
+
+  const handleMicClick = () => {
+    console.log('is listening', isListening)
+    if (!isListening) {
+      setIsListening(true);
+      recognition.start();
+      recognition.oneend = () => {
+        recognition.start()
+        console.log('on end hit')
+      };
+    } else {
+      recognition.stop();
+      console.log('stop krdo')
+      setIsListening(false);
+    }
+
+    let finalTranscript = "";
+    let interimTranscript = "";
+    recognition.onresult = (event: any) => {
+    
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript;
+        console.log("transcript", transcript);
+        if (event.results[i].isFinal) {
+          finalTranscript += transcript + " "
+          setSearchQuery(finalTranscript);
+        }
+        else {
+          interimTranscript += transcript;
+          // setInputValue(prevState => prevState + transcript)
+
+        }
+        console.log("final transcript", finalTranscript);
+        console.log("interim transcript", interimTranscript);
+      }
+    };
+
+    setTimeout(() => {
+      console.log('stop krdo 3')
+      recognition.stop();
+      setIsListening(false);
+    }, 15000);
+  };
 
   return (
     <div className="relative w-full flex items-center lg:gap-[10px] gap-[5px]">
@@ -107,7 +171,7 @@ function InputWithVoice() {
         className="bg-[#0c1019] font-roboto text-white rounded-[12px] h-[56px] w-full p-[2px_6px_2px_20px] border border-[rgba(255,255,255,0.10)]"
       />
       {!searchQuery && (
-        <div className="absolute right-[60px] cursor-pointer inset-y-0 flex items-center">
+        <div onClick={handleMicClick} className="absolute right-[60px] cursor-pointer inset-y-0 flex items-center">
           <Image src={VoiceIcon} alt="voice_icon" />
         </div>
       )}
