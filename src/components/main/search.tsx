@@ -18,11 +18,11 @@ const suggestions = [
   },
   {
     heading: "Best Ethereum Layer 2?",
-    paragraph: "Searched by 400+ users",
+    paragraph: "Searched by 400+ users.",
   },
   {
     heading: "What’s the time in Peru?",
-    paragraph: "Random fun question",
+    paragraph: "Random fun question.",
   },
   {
     heading: "What is the future of AI",
@@ -75,7 +75,7 @@ function Search() {
   };
 
   return (
-    <div className="flex flex-col z-10 mt-[20px] lg:mt-[0px] p-3 h-full justify-center items-center">
+    <div className="flex flex-col z-10 p-3 h-full justify-center items-center">
       <div className="unlock-answer-svg-container">
         <svg
           width="52"
