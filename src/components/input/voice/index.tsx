@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import VoiceIcon from "../../../assests/voice_icon.svg";
+import StopIcon from "../../../assests/stop.svg"
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
@@ -159,7 +160,6 @@ function InputWithVoice() {
       }
     };
   
-    // Automatically stop after 15 seconds
     setTimeout(() => {
       console.log('Automatic stop after 15 seconds');
       recognition.stop();
@@ -179,8 +179,8 @@ function InputWithVoice() {
         disabled={loading}
         className="bg-[#0c1019] font-roboto text-white rounded-[12px] h-[56px] w-full p-[2px_40px_2px_20px] border border-[rgba(255,255,255,0.10)]"
       />
-        <div onClick={handleMicClick} className="absolute right-[60px] cursor-pointer inset-y-0 flex items-center">
-          <Image src={VoiceIcon} alt="voice_icon" />
+        <div onClick={handleMicClick} className="absolute right-[65px] cursor-pointer inset-y-0 flex items-center">
+          <Image src={isListening ? StopIcon : VoiceIcon} alt="voice_icon" />
         </div>
       <div
         onClick={handleClick}
