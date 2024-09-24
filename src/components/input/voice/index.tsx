@@ -17,7 +17,6 @@ declare global {
   }
 }
 
-
 function InputWithVoice() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isListening, setIsListening] = useState(false);
@@ -105,55 +104,63 @@ function InputWithVoice() {
     }
   };
 
-  const recognition = new (window.SpeechRecognition ||
-    window.webkitSpeechRecognition ||
-    window.mozSpeechRecognition ||
-    window.msSpeechRecognition)();
+  let recognition: any;
 
-  recognition.lang = "en-US";
-  // recognition.finalResults = true;
-  recognition.interimResults = true;
-  recognition.maxAlternatives = 1;
-  recognition.continuous = true;
+  if (typeof window !== 'undefined' && !recognition) {
+    const SpeechRecognition =
+      window.SpeechRecognition ||
+      window.webkitSpeechRecognition ||
+      window.mozSpeechRecognition ||
+      window.msSpeechRecognition;
+
+    if (SpeechRecognition) {
+      recognition = new SpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.interimResults = true;
+      recognition.maxAlternatives = 1;
+      recognition.continuous = true;
+    }
+  }
 
   const handleMicClick = () => {
-    console.log('is listening', isListening)
+    if (!recognition) return;
+
+    console.log('is listening', isListening);
     if (!isListening) {
       setIsListening(true);
       recognition.start();
-      recognition.oneend = () => {
-        recognition.start()
-        console.log('on end hit')
+      recognition.onend = () => {
+        recognition.start();
+        console.log('on end hit');
       };
     } else {
       recognition.stop();
-      console.log('stop krdo')
+      console.log('stop krdo');
       setIsListening(false);
     }
 
     let finalTranscript = "";
     let interimTranscript = "";
+
     recognition.onresult = (event: any) => {
-    
       for (let i = event.resultIndex; i < event.results.length; i++) {
         const transcript = event.results[i][0].transcript;
         console.log("transcript", transcript);
-        if (event.results[i].isFinal) {
-          finalTranscript += transcript + " "
-          setSearchQuery(finalTranscript);
-        }
-        else {
-          interimTranscript += transcript;
-          // setInputValue(prevState => prevState + transcript)
 
+        if (event.results[i].isFinal) {
+          finalTranscript += transcript + " ";
+          setSearchQuery(finalTranscript);
+        } else {
+          interimTranscript += transcript;
         }
+
         console.log("final transcript", finalTranscript);
         console.log("interim transcript", interimTranscript);
       }
     };
 
     setTimeout(() => {
-      console.log('stop krdo 3')
+      console.log('stop krdo 3');
       recognition.stop();
       setIsListening(false);
     }, 15000);
