@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { groupByDate } from "@/utils/helpers";
 import cx from "classnames";
+import { useSmallScreen } from "@/services/api/common";
 
 interface SidebarProps {
   isSidebarOpen: boolean;
@@ -24,6 +25,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
   const router = useRouter();
   const pathName = usePathname();
   const [searchQuery, setSearchQuery] = useState("");
+  const isSmallScreen = useSmallScreen()
 
   const handleTabClick = (tabName: string) => {
     setActiveTab(tabName);
@@ -45,6 +47,9 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
     if(!loading){
     if (pathName !== "/chat") {
       await router.push("/chat");
+    }
+    if(isSmallScreen) {
+      toggleSidebar()
     }
 
     const timestamp = new Date().toISOString();
