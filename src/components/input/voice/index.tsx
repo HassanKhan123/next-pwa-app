@@ -159,6 +159,12 @@ function InputWithVoice() {
         console.log("interim transcript", interimTranscript);
       }
     };
+
+    recognition.onerror = (event: any) => {
+      if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+        setIsListening(false); 
+      }
+    }
   
     setTimeout(() => {
       console.log('Automatic stop after 15 seconds');

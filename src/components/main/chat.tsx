@@ -130,7 +130,7 @@ if(!loading){
                       .map((source, sourceIndex) => (
                         <SourcesCard
                           key={sourceIndex}
-                          text={source.text}
+                          text={source.text ? source.text : source.title}
                           name={source.title}
                           url={source.url}
                         />
