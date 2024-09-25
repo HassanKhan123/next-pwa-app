@@ -17,10 +17,12 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { redirect } from "next/navigation";
 import cx from "classnames";
 import { postMessage } from "@/services/api/api";
+import { useSmallScreen } from "@/services/api/common";
 
 function Chat() {
   const [chatData, setChatData] = useAtom(chatDataAtom);
   const [loading, setLoading] = useAtom(loadingAtom);
+  const isSmallScreen = useSmallScreen()
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
 
   const scrollToBottom = () => {
@@ -35,10 +37,9 @@ function Chat() {
       redirect("/");
       return;
     }
-  
+
     scrollToBottom();
   }, [chatData.searchValues, chatData.responses]);
-  
 
   const handleRebuild = async (message: string, index: number) => {
     setLoading(true);
@@ -102,17 +103,28 @@ function Chat() {
                 )}
               </h1>
               <div className="flex flex-col gap-[10px]">
-                <div className="flex items-center gap-[7px]">
+                <div className="flex w-full justify-between items-center gap-[7px]">
+                  <div className="flex items-center gap-[7px]">
+                    <Image
+                      src={SourcesIcon}
+                      alt="sources_icon"
+                      width={40}
+                      height={40}
+                    />
+                    <h3 className="text-white font-bold font-geistMono text-[18px]">
+                      Sources
+                    </h3>
+                  </div>
+                  {isSmallScreen &&
                   <Image
-                    src={SourcesIcon}
-                    alt="sources_icon"
-                    width={40}
-                    height={40}
+                    src={ArrowRightIcon}
+                    alt="arrow_right"
+                    width={16}
+                    height={16}
                   />
-                  <h3 className="text-white font-bold font-geistMono text-[18px]">
-                    Sources
-                  </h3>
+}
                 </div>
+
                 <div className="flex flex-col lg:flex-wrap w-full max-w-[350px] lg:max-w-full gap-[10px]">
                   {!chatData.responses[index]?.sources && (
                     <Skeleton
