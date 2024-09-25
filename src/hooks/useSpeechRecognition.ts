@@ -35,10 +35,10 @@ const useSpeechRecognition = (
       }
     }
   }, [
-    window.SpeechRecognition,
-    window.webkitSpeechRecognition,
-    window.mozSpeechRecognition,
-    window.msSpeechRecognition,
+    global.window?.SpeechRecognition,
+    global.window?.webkitSpeechRecognition,
+    global.window?.mozSpeechRecognition,
+    global.window?.msSpeechRecognition,
   ]);
 
   const startListening = () => {
