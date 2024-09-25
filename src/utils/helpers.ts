@@ -17,7 +17,7 @@ export const groupByDate = (history: { value: string; timestamp: string }[]) => 
       if (isToday(responseDate)) {
         groupLabel = "Today";
       } else if (isYesterday(responseDate)) {
-        groupLabel = '1 day dgo';
+        groupLabel = '1 day ago';
       } else {
         const daysAgo = differenceInDays(today, responseDate);
         groupLabel = isNaN(daysAgo) ? "Today" : `${daysAgo} days ago`;

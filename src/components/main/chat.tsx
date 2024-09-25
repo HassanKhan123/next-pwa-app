@@ -22,66 +22,79 @@ function Chat() {
   const [chatData, setChatData] = useAtom(chatDataAtom);
   const latestSearchRef = useRef<HTMLDivElement | null>(null);
   const [loading, setLoading] = useAtom(loadingAtom);
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollToBottom = () => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  };
 
   useEffect(() => {
     if (chatData.searchValues.length === 0) {
       redirect("/");
       return;
     }
-
+  
     if (chatData.searchValues.length > 1 && latestSearchRef.current) {
       latestSearchRef.current.scrollIntoView({
         behavior: "smooth",
         block: "start",
       });
     }
-  }, [chatData.searchValues]);
+  
+    scrollToBottom();
+  }, [chatData.searchValues, chatData.responses]);
+  
 
   const handleRebuild = async (message: string, index: number) => {
     setLoading(true);
 
-if(!loading){
-    setChatData((prevData) => ({
-      ...prevData,
-      responses: prevData.responses.map((response, idx) =>
-        idx === index ? { ...response, content: "" } : response
-      ),
-    }));
+    if (!loading) {
+      setChatData((prevData) => ({
+        ...prevData,
+        responses: prevData.responses.map((response, idx) =>
+          idx === index ? { ...response, content: "" } : response
+        ),
+      }));
 
-    const onContentReceived = (newContent: string) => {
-      setChatData((prevData) => {
-        return {
-          ...prevData,
-          responses: prevData.responses.map((response, idx) =>
-            idx === index
-              ? { ...response, content: response.content + newContent }
-              : response
-          ),
-        };
-      });
-    };
+      const onContentReceived = (newContent: string) => {
+        setChatData((prevData) => {
+          return {
+            ...prevData,
+            responses: prevData.responses.map((response, idx) =>
+              idx === index
+                ? { ...response, content: response.content + newContent }
+                : response
+            ),
+          };
+        });
+      };
 
-    const onParsedChunkReceived = (parsedChunkData: any) => {
-      const sources = parsedChunkData?.sources || [];
+      const onParsedChunkReceived = (parsedChunkData: any) => {
+        const sources = parsedChunkData?.sources || [];
+      };
 
-    };
-
-    try {
-      await postMessage(message, onContentReceived, onParsedChunkReceived);
-    } catch (error) {
-      console.error("Error during postData call:", error);
-    } finally {
-      setLoading(false);
+      try {
+        await postMessage(message, onContentReceived, onParsedChunkReceived);
+      } catch (error) {
+        console.error("Error during postData call:", error);
+      } finally {
+        setLoading(false);
+      }
     }
-  }
   };
 
   return (
-    <>
+    <div
+      ref={chatContainerRef}
+      className="overflow-y-auto z-10 hide-scrollbar max-h-[calc(100vh-100px)]"
+    >
       {chatData.searchValues.map((searchValue, index) => (
         <div
           className={cx(
-            "flex gap-[20px] z-10 lg:p-[20px] p-[10px] justify-between w-full",
+            "flex gap-[20px] lg:p-[20px] p-[10px] justify-between w-full"
           )}
           key={index}
         >
@@ -195,7 +208,7 @@ if(!loading){
       <div className="flex border border-[rgba(255,255,255,0.08)] z-10 p-[8px_10px_8px_8px] bg-[#141823] fixed bottom-1 items-center w-full lg:ml-[20px] ml-[0px] lg:w-[775px] rounded-[20px] lg:gap-[10px] gap-[5px]">
         <InputWithVoice />
       </div>
-    </>
+    </div>
   );
 }
 
