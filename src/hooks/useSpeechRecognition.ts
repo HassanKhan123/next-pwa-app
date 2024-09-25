@@ -79,10 +79,6 @@ const useSpeechRecognition = (
       if (isListening) recognition.start();
     };
 
-    setTimeout(() => {
-      recognition.stop();
-      setIsListening(false);
-    }, 15000);
   };
 
   const stopListening = () => {

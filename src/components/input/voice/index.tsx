@@ -68,7 +68,7 @@ function InputWithVoice() {
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const trimmedQuery = searchQuery.trim();
-    if (event.key === "Enter" && trimmedQuery) {
+    if (event.key === "Enter" && trimmedQuery && !isListening) {
       if(pathname == "/") {
         router.push("/chat");
       }
@@ -86,7 +86,7 @@ function InputWithVoice() {
 
   const handleClick = () => {
     const trimmedQuery = searchQuery.trim();
-    if (trimmedQuery) {
+    if (trimmedQuery && !isListening) {
       if(pathname == "/") {
         router.push("/chat");
       }
