@@ -9,29 +9,37 @@ declare global {
   }
 }
 
-const useSpeechRecognition = (onTranscriptChange: (transcript: string) => void) => {
+const useSpeechRecognition = (
+  onTranscriptChange: (transcript: string) => void
+) => {
   const [isListening, setIsListening] = useState(false);
   const [finalTranscript, setFinalTranscript] = useState("");
   const [interimTranscript, setInterimTranscript] = useState("");
-  let recognition: any;
+  const [recognition, setRecognition] = useState<any>(null);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition ||
+        window.mozSpeechRecognition ||
+        window.msSpeechRecognition;
 
-  if (typeof window !== 'undefined') {
-    const SpeechRecognition =
-      window.SpeechRecognition ||
-      window.webkitSpeechRecognition ||
-      window.mozSpeechRecognition ||
-      window.msSpeechRecognition;
-
-    if (SpeechRecognition) {
-      recognition = new SpeechRecognition();
-      recognition.lang = "en-US";
-      recognition.interimResults = true;
-      recognition.maxAlternatives = 1;
-      recognition.continuous = true;
+      if (SpeechRecognition) {
+        const recognition2 = new SpeechRecognition();
+        recognition2.lang = "en-US";
+        recognition2.interimResults = true;
+        recognition2.maxAlternatives = 1;
+        recognition2.continuous = true;
+        setRecognition(recognition2);
+      }
     }
-  }
-
+  }, [
+    window.SpeechRecognition,
+    window.webkitSpeechRecognition,
+    window.mozSpeechRecognition,
+    window.msSpeechRecognition,
+  ]);
 
   const startListening = () => {
     if (!recognition) return;
@@ -59,7 +67,10 @@ const useSpeechRecognition = (onTranscriptChange: (transcript: string) => void) 
     };
 
     recognition.onerror = (event: any) => {
-      if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+      if (
+        event.error === "not-allowed" ||
+        event.error === "service-not-allowed"
+      ) {
         setIsListening(false);
       }
     };
@@ -71,7 +82,7 @@ const useSpeechRecognition = (onTranscriptChange: (transcript: string) => void) 
     setTimeout(() => {
       recognition.stop();
       setIsListening(false);
-    }, 15000); 
+    }, 15000);
   };
 
   const stopListening = () => {
@@ -80,7 +91,13 @@ const useSpeechRecognition = (onTranscriptChange: (transcript: string) => void) 
     setIsListening(false);
   };
 
-  return { isListening, startListening, stopListening, finalTranscript, interimTranscript };
+  return {
+    isListening,
+    startListening,
+    stopListening,
+    finalTranscript,
+    interimTranscript,
+  };
 };
 
 export default useSpeechRecognition;
