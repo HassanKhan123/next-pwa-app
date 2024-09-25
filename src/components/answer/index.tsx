@@ -90,7 +90,7 @@ function AnswerCard({ isLoading, text, searchValue, time, id, handleRebuild }: A
   };
 
   return (
-    <div className="flex w-full mb-[40px] max-w-full lg:max-w-[775px] flex-col bg-[rgba(255,255,255,0.025)] border border-[rgba(255,255,255,0.08)] rounded-[8px] gap-[15px] p-[20px]">
+    <div className="flex w-full mb-[20px] max-w-full lg:max-w-[775px] flex-col bg-[rgba(255,255,255,0.025)] border border-[rgba(255,255,255,0.08)] rounded-[8px] gap-[15px] p-[20px]">
       {isLoading ? (
         <Skeleton count={3} highlightColor="#803CFF" />
       ) : (

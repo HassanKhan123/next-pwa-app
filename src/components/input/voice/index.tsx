@@ -67,7 +67,8 @@ function InputWithVoice() {
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter" && searchQuery) {
+    const trimmedQuery = searchQuery.trim();
+    if (event.key === "Enter" && trimmedQuery) {
       if(pathname == "/") {
         router.push("/chat");
       }
@@ -84,7 +85,8 @@ function InputWithVoice() {
   };
 
   const handleClick = () => {
-    if (searchQuery) {
+    const trimmedQuery = searchQuery.trim();
+    if (trimmedQuery) {
       if(pathname == "/") {
         router.push("/chat");
       }
@@ -103,6 +105,7 @@ function InputWithVoice() {
 
 
   const handleMicClick = () => {
+    if(loading) return
     if (isListening) {
       stopListening();
     } else {
