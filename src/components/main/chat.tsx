@@ -20,7 +20,6 @@ import { postMessage } from "@/services/api/api";
 
 function Chat() {
   const [chatData, setChatData] = useAtom(chatDataAtom);
-  const latestSearchRef = useRef<HTMLDivElement | null>(null);
   const [loading, setLoading] = useAtom(loadingAtom);
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -35,13 +34,6 @@ function Chat() {
     if (chatData.searchValues.length === 0) {
       redirect("/");
       return;
-    }
-  
-    if (chatData.searchValues.length > 1 && latestSearchRef.current) {
-      latestSearchRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
     }
   
     scrollToBottom();
@@ -102,11 +94,6 @@ function Chat() {
             <div
               className="w-full flex flex-col lg:gap-[30px] gap-[20px]"
               key={index}
-              ref={
-                index === chatData.searchValues.length - 1
-                  ? latestSearchRef
-                  : null
-              }
             >
               <h1 className="text-white w-full max-w-full lg:max-w-[775px]  font-geistMono text-[28px] uppercase font-normal tracking-[-0.02em]">
                 {searchValue}
