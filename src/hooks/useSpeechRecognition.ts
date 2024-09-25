@@ -76,6 +76,7 @@ const useSpeechRecognition = (
     };
 
     recognition.onend = () => {
+      setIsListening(false)
       if (isListening) recognition.start();
     };
 
