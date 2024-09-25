@@ -10,22 +10,27 @@ import { usePathname } from "next/navigation";
 import { groupByDate } from "@/utils/helpers";
 import cx from "classnames";
 import { useSmallScreen } from "@/services/api/common";
-
+import ConfirmModal from '@/components/ConfirmModal'
 interface SidebarProps {
   isSidebarOpen: boolean;
   toggleSidebar: () => void;
 }
 
+
+
 function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
   const [activeTab, setActiveTab] = useState("History");
   const [history, setHistory] = useAtom(historyAtom);
   const [chatData, setChatData] = useAtom(chatDataAtom);
-  const [loading, setLoading] = useAtom(loadingAtom)
+  const [loading, setLoading] = useAtom(loadingAtom);
   const [bookmarks] = useAtom(bookmarkAtom);
   const router = useRouter();
   const pathName = usePathname();
   const [searchQuery, setSearchQuery] = useState("");
-  const isSmallScreen = useSmallScreen()
+  const isSmallScreen = useSmallScreen();
+
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<string | null>(null);
 
   const handleTabClick = (tabName: string) => {
     setActiveTab(tabName);
@@ -38,64 +43,63 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
 
   const handleToggleSidebar = () => {
     setSearchQuery("");
-    toggleSidebar(); 
+    toggleSidebar();
   };
 
-
   const handlePost = async (message: string) => {
-    setLoading(true)
-    if(!loading){
-    if (pathName !== "/chat") {
-      await router.push("/chat");
-    }
-    if(isSmallScreen) {
-      toggleSidebar()
-    }
+    setLoading(true);
+    if (!loading) {
+      if (pathName !== "/chat") {
+        await router.push("/chat");
+      }
+      if (isSmallScreen) {
+        toggleSidebar();
+      }
 
-    const timestamp = new Date().toISOString();
+      const timestamp = new Date().toISOString();
 
-    setHistory((prev) => [...prev, { value: message, timestamp }]);
+      setHistory((prev) => [...prev, { value: message, timestamp }]);
 
-    setChatData((prev) => ({
-      ...prev,
-      searchValues: [...prev.searchValues, message],
-    }));
-
-    const onContentReceived = (newContent: string) => {
-      setChatData((prevData) => {
-        const lastResponseIndex = prevData.responses.length - 1;
-
-        return {
-          ...prevData,
-          responses: prevData.responses.map((response, index) =>
-            index === lastResponseIndex
-              ? { ...response, content: response.content + newContent }
-              : response
-          ),
-        };
-      });
-    };
-
-    const onParsedChunkReceived = (parsedChunkData: any) => {
-      const sources = parsedChunkData?.sources || [];
-
-      setChatData((prevChatData) => ({
-        ...prevChatData,
-        responses: [
-          ...prevChatData.responses,
-          { sources, content: "", timestamp: new Date().toISOString() },
-        ],
+      setChatData((prev) => ({
+        ...prev,
+        searchValues: [...prev.searchValues, message],
       }));
-    };
 
-    try {
-      await postMessage(message, onContentReceived, onParsedChunkReceived);
-    } catch (error) {
-      console.error("Error during postData call:", error);
-    } finally {
-      setLoading(false)
+      const onContentReceived = (newContent: string) => {
+        setChatData((prevData) => {
+          const lastResponseIndex = prevData.responses.length - 1;
+
+          return {
+            ...prevData,
+            responses: prevData.responses.map((response, index) =>
+              index === lastResponseIndex
+                ? { ...response, content: response.content + newContent }
+                : response
+            ),
+          };
+        });
+      };
+
+      const onParsedChunkReceived = (parsedChunkData: any) => {
+        const sources = parsedChunkData?.sources || [];
+
+        setChatData((prevChatData) => ({
+          ...prevChatData,
+          responses: [
+            ...prevChatData.responses,
+            { sources, content: "", timestamp: new Date().toISOString() },
+          ],
+        }));
+      };
+
+      try {
+        await postMessage(message, onContentReceived, onParsedChunkReceived);
+      } catch (error) {
+        console.error("Error during postData call:", error);
+      } finally {
+        setLoading(false);
+      }
     }
-  }
   };
 
   const groupedHistory = groupByDate(history);
@@ -113,6 +117,21 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
     {} as Record<string, string[]>
   );
 
+  const handleConfirmDelete = () => {
+    if (itemToDelete) {
+      setHistory((prev) =>
+        prev.filter((historyItem) => historyItem.value !== itemToDelete)
+      );
+    }
+    setDeleteModalOpen(false);
+    setItemToDelete(null);
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteModalOpen(false);
+    setItemToDelete(null);
+  };
+
   return (
     <div
       className={cx(
@@ -122,7 +141,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
           "-translate-x-full hidden": !isSidebarOpen,
         }
       )}
-      style={{height: "99vh", overflowY: "scroll"}}
+      style={{ height: "99vh", overflowY: "scroll" }}
     >
       <div className="flex flex-col gap-[20px]">
         <button className="text-white z-10 focus:outline-none">
@@ -177,12 +196,32 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
                       .map((value, valueIndex) => (
                         <div
                           key={valueIndex}
-                          onClick={() => handlePost(value)}
-                          className="cursor-pointer p-[10px] flex flex-col rounded-lg text-white"
+                          className="px-2.5 py-1.5 flex gap-1 justify-between rounded-lg text-white"
                         >
-                          <p className="text-[15px] text-[rgba(242,244,247,1)] font-normal font-roboto">
+                          <p
+                            onClick={() => handlePost(value)}
+                            className="md:text-xs text-base cursor-pointer text-[rgba(242,244,247,1)] font-normal font-roboto"
+                          >
                             {value}
                           </p>
+                          <svg
+                            onClick={() => {
+                              setItemToDelete(value);
+                              setDeleteModalOpen(true);
+                            }}
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="md:size-4 md:min-w-4 size-5 min-w-5 z-10"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M14.74 9L14.394 18M9.606 18L9.26 9M19.228 5.79C19.57 5.842 19.91 5.897 20.25 5.956M19.228 5.79L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79M19.228 5.79a48.108 48.108 0 00-3.478-.397M4.772 5.79c.34-.059.68-.114 1.022-.165M5.794 5.79a48.11 48.11 0 013.478-.397M14.794 5.393V4.477C14.794 3.297 13.884 2.313 12.704 2.276a51.964 51.964 0 00-3.32 0C8.204 2.313 7.294 3.297 7.294 4.477v.916"
+                            />
+                          </svg>
                         </div>
                       ))}
                   </div>
@@ -195,6 +234,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
             )}
           </div>
         )}
+
         {activeTab === "Bookmark" && (
           <div className="flex flex-col gap-2">
             {bookmarks.filter((bookmark) =>
@@ -223,6 +263,9 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
           </div>
         )}
       </div>
+      {isDeleteModalOpen && (
+        <ConfirmModal onConfirm={handleConfirmDelete} onCancel={handleCancelDelete} />
+      )}
     </div>
   );
 }
