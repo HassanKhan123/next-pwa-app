@@ -24,11 +24,22 @@ function Chat() {
   const [loading, setLoading] = useAtom(loadingAtom);
   const isSmallScreen = useSmallScreen()
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
+  const [isAutoScrolling, setIsAutoScrolling] = useState(true);
 
   const scrollToBottom = () => {
+    if (chatContainerRef.current && isAutoScrolling) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  };
+
+  const handleScroll = () => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop =
-        chatContainerRef.current.scrollHeight;
+      const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
+      if (scrollHeight - scrollTop - clientHeight > 50) {
+        setIsAutoScrolling(false); 
+      } else {
+        setIsAutoScrolling(true);
+      }
     }
   };
 
@@ -40,6 +51,19 @@ function Chat() {
 
     scrollToBottom();
   }, [chatData.searchValues, chatData.responses]);
+
+  useEffect(() => {
+    const chatContainer = chatContainerRef.current;
+    if (chatContainer) {
+      chatContainer.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (chatContainer) {
+        chatContainer.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, []);
 
   const handleRebuild = async (message: string, index: number) => {
     setLoading(true);

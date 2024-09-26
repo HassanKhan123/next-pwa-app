@@ -20,7 +20,7 @@ export const postMessage = async (
   onParsedChunkReceived: (parsedChunk: any) => void,
 ) => {
   try {
-    const response = await fetch(`${BACKEND_URL}/search/chat`, {
+    const response = await fetch(`${BACKEND_URL}/chat`, {
       method: "POST",
       headers: {
         accept: "application/json",
