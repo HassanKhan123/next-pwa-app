@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        roboto: ['Roboto', 'sans-serif'],
+        roboto: 'var(--roboto-mano)',
         geistMono: ['Geist Mono', 'monospace'],
       },
       colors: {

@@ -38,10 +38,10 @@ function SuggestionCard({
         width={40}
         height={40}
       />
-      <span className="text-white z-10 text-[16px] font-roboto font-normal">
+      <span className="text-white z-10 text-sm font-roboto leading-[120%] font-normal">
         {heading}
       </span>
-      <span className="text-[rgba(255,255,255,0.40)] z-10 text-[14px] font-normal font-roboto">
+      <span className="text-[rgba(255,255,255,0.40)] z-10 text-sm mt-2 font-normal font-roboto">
         {paragraph}
       </span>
     </div>
