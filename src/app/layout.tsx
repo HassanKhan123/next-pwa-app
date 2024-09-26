@@ -5,7 +5,6 @@ import { Provider as JotaiProvider } from "jotai";
 import Layout from "../layout";
 import AppKitProvider from "@/context";
 import { ToastContainer } from "react-toastify";
-import { Head } from "next/document";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,9 +20,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-       <head>
-       <link rel="icon" href="/favicon.ico" />
-       </head>
       <body className={`lg:p-[10px] overflow-auto lg:overflow-hidden p-[0px] ${inter.className}`}>
         <AppKitProvider>
           <JotaiProvider>
