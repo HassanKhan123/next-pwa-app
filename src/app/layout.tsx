@@ -16,7 +16,7 @@ const roboto_mano = Roboto_Mono({
 
 export const metadata: Metadata = {
   title: "AI Search Engine",
-  description: "The fastest AI search engine, by TARS",
+  description: "AI Search Engine The fastest AI search engine, by TARS",
 };
 
 export default function RootLayout({
