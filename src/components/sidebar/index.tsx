@@ -30,7 +30,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
   const isSmallScreen = useSmallScreen();
 
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState<string | null>(null);
+  const [itemToDelete, setItemToDelete] = useState<Number | null>(null);
 
   const handleTabClick = (tabName: string) => {
     setActiveTab(tabName);
@@ -118,14 +118,13 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
   );
 
   const handleConfirmDelete = () => {
-    if (itemToDelete) {
-      setHistory((prev) =>
-        prev.filter((historyItem) => historyItem.value !== itemToDelete)
-      );
+    if (itemToDelete !== null) {
+      setHistory((prev) => prev.filter((_, index) => index !== itemToDelete));
     }
     setDeleteModalOpen(false);
     setItemToDelete(null);
   };
+  
 
   const handleCancelDelete = () => {
     setDeleteModalOpen(false);
@@ -206,7 +205,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
                           </p>
                           <svg
                             onClick={() => {
-                              setItemToDelete(value);
+                              setItemToDelete(values.length - 1 - valueIndex);
                               setDeleteModalOpen(true);
                             }}
                             xmlns="http://www.w3.org/2000/svg"
