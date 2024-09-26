@@ -25,6 +25,7 @@ function Chat() {
   const isSmallScreen = useSmallScreen()
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const [isAutoScrolling, setIsAutoScrolling] = useState(true);
+  const latestSearchRef = useRef<HTMLDivElement | null>(null);
 
   const scrollToBottom = () => {
     if (chatContainerRef.current && isAutoScrolling) {
@@ -48,9 +49,17 @@ function Chat() {
       redirect("/");
       return;
     }
+    if (chatData.searchValues.length > 1 && latestSearchRef.current) {
+      latestSearchRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [chatData.searchValues]);
 
+  useEffect(() => {
     scrollToBottom();
-  }, [chatData.searchValues, chatData.responses]);
+  },[chatData.responses])
 
   useEffect(() => {
     const chatContainer = chatContainerRef.current;
@@ -119,6 +128,11 @@ function Chat() {
             <div
               className="w-full flex flex-col lg:gap-[30px] gap-[20px]"
               key={index}
+              ref={
+                index === chatData.searchValues.length - 1
+                  ? latestSearchRef
+                  : null
+              }
             >
               <h1 className="text-white w-full max-w-full lg:max-w-[775px]  font-geistMono text-[28px] uppercase font-normal tracking-[-0.02em]">
                 {searchValue}
