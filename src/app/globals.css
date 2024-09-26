@@ -7,6 +7,9 @@ body {
     @apply bg-custom-purple;
   }
   
+.--font {
+  font-family: __Roboto_Mono_9317f7, "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, "Liberation Mono", "DejaVu Sans Mono", "Courier New", monospace !important;
+}
 
 .hide-scrollbar {
   scrollbar-width: none; /* For Firefox */

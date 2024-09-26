@@ -105,7 +105,7 @@ function AnswerCard({ isLoading, text, searchValue, time, id, handleRebuild }: A
           </div>
           <div
             id={`markdown-${id}`} // Assign unique ID
-            className="text-white text-[16px] fon-normal font-roboto"
+            className="text-white text-[16px] font-normal font-roboto"
             dangerouslySetInnerHTML={markdownContent}
           />
           <div className="flex gap-[10px] items-center">

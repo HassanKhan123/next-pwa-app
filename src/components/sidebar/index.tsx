@@ -170,7 +170,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
           <div
             onClick={() => handleTabClick("History")}
             className={cx(
-              "cursor-pointer lg:w-[121px] w-[50%] h-[48px] p-[15px_10px_15px_10px] flex items-center justify-center text-[16px] font-normal rounded-[12px] border transition-all duration-300",
+              "cursor-pointer lg:w-[121px] w-[50%] h-[48px] p-[15px_10px_15px_10px] flex items-center justify-center font-roboto text-[16px] font-[500] rounded-[12px] border transition-all duration-300",
               {
                 "bg-[#1F0E3C] border-custom-purple-border":
                   activeTab === "History",
@@ -205,7 +205,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
                     className="flex cursor-pointer flex-col gap-[10px]"
                     key={index}
                   >
-                    <span className="text-[15px] text-[rgba(169,60,255,1)] font-normal font-roboto rounded-[6px] bg-[#222337] shadow-custom-inset p-[4px_10px_4px_10px] border border-[rgba(255,255,255,0.08)]">
+                    <span className="text-[15px] text-[rgba(169,60,255,1)] font-[500] font-roboto rounded-[6px] bg-[#222337] shadow-custom-inset p-[4px_10px_4px_10px] border border-[rgba(255,255,255,0.08)]">
                       {dateLabel}
                     </span>
                     {values
@@ -214,11 +214,11 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
                       .map((value, valueIndex) => (
                         <div
                           key={valueIndex}
-                          className="px-2.5 py-1.5 flex gap-1 justify-between rounded-lg text-white"
+                          className="px-1 py-1.5 flex gap-1 justify-between rounded-lg text-white"
                         >
                           <p
                             onClick={() => handlePost(value)}
-                            className="md:text-xs text-base cursor-pointer text-[rgba(242,244,247,1)] font-normal font-roboto"
+                            className="md:text-xs text-base cursor-pointer text-[rgba(242,244,247,1)] font-[500] tracking-[-0.34px] leading-[120%] font-roboto"
                           >
                             {value}
                           </p>

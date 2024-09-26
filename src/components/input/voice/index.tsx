@@ -123,7 +123,7 @@ function InputWithVoice() {
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
         disabled={loading}
-        className="bg-[#0c1019] font-roboto text-white rounded-[12px] h-[56px] w-full p-[2px_40px_2px_20px] border border-[rgba(255,255,255,0.10)]"
+        className="bg-[#0c1019] font-roboto text-white leading-[120%] font-[400] rounded-[12px] h-[56px] w-full p-[2px_40px_2px_20px] border border-[rgba(255,255,255,0.10)]"
       />
         <div onClick={handleMicClick} className="absolute right-[55px] lg:right-[65px] cursor-pointer inset-y-0 flex items-center">
           <Image src={isListening ? StopIcon : VoiceIcon} alt="voice_icon" />
