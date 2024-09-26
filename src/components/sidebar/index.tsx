@@ -10,27 +10,32 @@ import { usePathname } from "next/navigation";
 import { groupByDate } from "@/utils/helpers";
 import cx from "classnames";
 import { useSmallScreen } from "@/services/api/common";
-import ConfirmModal from '@/components/ConfirmModal'
+import ConfirmModal from "@/components/ConfirmModal";
 interface SidebarProps {
   isSidebarOpen: boolean;
   toggleSidebar: () => void;
 }
 
-
+type DeleteContext = {
+  type: "bookmark" | "history" | null;
+  index: number | null;
+};
 
 function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
   const [activeTab, setActiveTab] = useState("History");
   const [history, setHistory] = useAtom(historyAtom);
   const [chatData, setChatData] = useAtom(chatDataAtom);
   const [loading, setLoading] = useAtom(loadingAtom);
-  const [bookmarks] = useAtom(bookmarkAtom);
+  const [bookmarks, setBookmarks] = useAtom(bookmarkAtom);
   const router = useRouter();
   const pathName = usePathname();
   const [searchQuery, setSearchQuery] = useState("");
   const isSmallScreen = useSmallScreen();
-
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState<Number | null>(null);
+  const [deleteContext, setDeleteContext] = useState<DeleteContext>({
+    type: null,
+    index: null,
+  });
 
   const handleTabClick = (tabName: string) => {
     setActiveTab(tabName);
@@ -118,17 +123,27 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
   );
 
   const handleConfirmDelete = () => {
-    if (itemToDelete !== null) {
-      setHistory((prev) => prev.filter((_, index) => index !== itemToDelete));
+    const { type, index } = deleteContext;
+
+    if (type && index !== null) {
+      if (type === "history") {
+        setHistory((prev) => prev.filter((_, i) => i !== index));
+      } else if (type === "bookmark") {
+        setBookmarks((prev) => prev.filter((_, i) => i !== index));
+      }
+      setDeleteModalOpen(false);
+      setDeleteContext({ type: null, index: null });
     }
-    setDeleteModalOpen(false);
-    setItemToDelete(null);
   };
-  
 
   const handleCancelDelete = () => {
     setDeleteModalOpen(false);
-    setItemToDelete(null);
+    setDeleteContext({ type: null, index: null });
+  };
+
+  const openDeleteModal = (type: "bookmark" | "history", index: number) => {
+    setDeleteContext({ type, index });
+    setDeleteModalOpen(true);
   };
 
   return (
@@ -144,7 +159,11 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
     >
       <div className="flex flex-col gap-[20px]">
         <button className="text-white z-10 focus:outline-none">
-          <Image onClick={handleToggleSidebar} src={CrossLogo} alt="Cross_logo" />
+          <Image
+            onClick={handleToggleSidebar}
+            src={CrossLogo}
+            alt="Cross_logo"
+          />
         </button>
 
         <div className="rounded-[12px] p-[4px] gap-[10px] h-[56px] flex items-center bg-[#0D121C]">
@@ -204,10 +223,12 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
                             {value}
                           </p>
                           <svg
-                            onClick={() => {
-                              setItemToDelete(values.length - 1 - valueIndex);
-                              setDeleteModalOpen(true);
-                            }}
+                            onClick={() =>
+                              openDeleteModal(
+                                "history",
+                                values.length - 1 - valueIndex
+                              )
+                            }
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
@@ -235,7 +256,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
         )}
 
         {activeTab === "Bookmark" && (
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col">
             {bookmarks.filter((bookmark) =>
               bookmark.toLowerCase().includes(searchQuery.toLowerCase())
             ).length > 0 ? (
@@ -246,12 +267,31 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
                 .map((bookmark, index) => (
                   <div
                     key={index}
-                    onClick={() => handlePost(bookmark)}
-                    className="bg-[#252540] cursor-pointer p-[15px] flex flex-col gap-[5px] rounded-lg text-white"
+                    className="cursor-pointer p-[15px] flex flex-col gap-[5px] rounded-lg text-white"
                   >
-                    <p className="text-[14px]">
-                      {index + 1}. {bookmark}
-                    </p>
+                    <div className="flex gap-[5px] items-center justify-between">
+                      <p
+                        onClick={() => handlePost(bookmark)}
+                        className="md:text-xs"
+                      >
+                        {index + 1}. {bookmark}
+                      </p>
+                      <svg
+                        onClick={() => openDeleteModal("bookmark", index)}
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="md:size-4 md:min-w-4 size-5 min-w-5 z-10"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M14.74 9L14.394 18M9.606 18L9.26 9M19.228 5.79C19.57 5.842 19.91 5.897 20.25 5.956M19.228 5.79L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79M19.228 5.79a48.108 48.108 0 00-3.478-.397M4.772 5.79c.34-.059.68-.114 1.022-.165M5.794 5.79a48.11 48.11 0 013.478-.397M14.794 5.393V4.477C14.794 3.297 13.884 2.313 12.704 2.276a51.964 51.964 0 00-3.32 0C8.204 2.313 7.294 3.297 7.294 4.477v.916"
+                        />
+                      </svg>
+                    </div>
                   </div>
                 ))
             ) : (
@@ -263,7 +303,10 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
         )}
       </div>
       {isDeleteModalOpen && (
-        <ConfirmModal onConfirm={handleConfirmDelete} onCancel={handleCancelDelete} />
+        <ConfirmModal
+          onConfirm={handleConfirmDelete}
+          onCancel={handleCancelDelete}
+        />
       )}
     </div>
   );
