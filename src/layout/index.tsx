@@ -1,9 +1,9 @@
-"use client"
-import React, { useState, ReactNode , useEffect} from "react";
+"use client";
+import React, { useState, ReactNode, useEffect } from "react";
 import Sidebar from "@/components/sidebar";
 import Navbar from "@/components/navbar";
 import Image from "next/image";
-import BackgroundGlowTop from "../assests/background_glow_top.png"
+import BackgroundGlowTop from "../assests/background_glow_top.png";
 import { useSmallScreen } from "@/services/api/common";
 
 interface LayoutProps {
@@ -12,11 +12,22 @@ interface LayoutProps {
 
 function Layout({ children }: LayoutProps) {
   const isSmallScreen = useSmallScreen();
-  const [isSidebarOpen, setSidebarOpen] = useState(!isSmallScreen);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [isLoading, setLoading] = useState(true); 
 
   useEffect(() => {
-    setSidebarOpen(!isSmallScreen);
-  }, [isSmallScreen]);
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading) {
+      setSidebarOpen(!isSmallScreen); 
+    }
+  }, [isSmallScreen, isLoading]);
 
   const toggleSidebar = () => {
     setSidebarOpen((prev) => !prev);
@@ -25,13 +36,19 @@ function Layout({ children }: LayoutProps) {
   return (
     <>
       <div className="flex relative">
-        <Image src={BackgroundGlowTop} alt="bg_glow" className="hidden w-full lg:flex absolute z-0 top-0" />
-        <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+        <Image
+          src={BackgroundGlowTop}
+          alt="bg_glow"
+          className="hidden w-full lg:flex absolute z-0 top-0"
+        />
+        {!isLoading && (
+          <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+        )}
         <div
-        style={{backgroundColor: "#0D121C", height: "100vh"}}
+          style={{ backgroundColor: "#0D121C", height: "100vh" }}
           className={`flex w-full rounded-lg flex-col transition-all duration-300 ease-in-out`}
         >
-               <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+          <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
           <div className="flex h-full flex-col">{children}</div>
         </div>
       </div>
