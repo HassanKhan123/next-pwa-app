@@ -11,6 +11,7 @@ import { groupByDate } from "@/utils/helpers";
 import cx from "classnames";
 import { useSmallScreen } from "@/services/api/common";
 import ConfirmModal from "@/components/ConfirmModal";
+import { truncateText } from "@/utils/helpers";
 interface SidebarProps {
   isSidebarOpen: boolean;
   toggleSidebar: () => void;
@@ -112,7 +113,6 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
   };
 
   const groupedHistory = groupByDate(history);
-  
 
   const filteredHistory = Object.entries(groupedHistory).reduce(
     (acc, [dateLabel, values]) => {
@@ -162,7 +162,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
           "-translate-x-full hidden": !isSidebarOpen,
         }
       )}
-      style={{ height: "99vh", overflowY: "scroll" }}
+      style={{ height: "99vh", overflowY: "scroll", }}
     >
       <div className="flex flex-col gap-[20px]">
         <button className="text-white z-10 focus:outline-none">
@@ -221,11 +221,11 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
                       .map((value, valueIndex) => (
                         <div
                           key={valueIndex}
-                          className="px-1 py-1.5 flex gap-1 justify-between rounded-lg text-white"
+                          className="px-1 py-1.5 w-full flex gap-1 justify-between rounded-lg text-white"
                         >
                           <p
                             onClick={() => handlePost(value.value)}
-                            className="md:text-xs text-base cursor-pointer text-[rgba(242,244,247,1)] font-[500] tracking-[-0.34px] leading-[120%] font-roboto"
+                           className="md:text-xs w-[80%] text-base cursor-pointer text-[rgba(242,244,247,1)] font-[500] tracking-[-0.34px] leading-[120%] font-roboto break-words whitespace-normal"
                           >
                             {value.value}
                           </p>
@@ -276,10 +276,10 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
                     key={index}
                     className="cursor-pointer p-[15px] flex flex-col gap-[5px] rounded-lg text-white"
                   >
-                    <div className="flex gap-[5px] items-center justify-between">
+                    <div className="flex w-full gap-[5px] items-center justify-between">
                       <p
                         onClick={() => handlePost(bookmark)}
-                        className="md:text-xs"
+                        className="md:text-xs w-[80%] text-base cursor-pointer text-[rgba(242,244,247,1)] font-[500] tracking-[-0.34px] leading-[120%] font-roboto break-words whitespace-normal"
                       >
                         {index + 1}. {bookmark}
                       </p>

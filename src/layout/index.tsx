@@ -12,7 +12,7 @@ interface LayoutProps {
 
 function Layout({ children }: LayoutProps) {
   const isSmallScreen = useSmallScreen();
-  const [isSidebarOpen, setSidebarOpen] = useState(!isSmallScreen);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     setSidebarOpen(!isSmallScreen);

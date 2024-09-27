@@ -18,6 +18,7 @@ import { redirect } from "next/navigation";
 import cx from "classnames";
 import { postMessage } from "@/services/api/api";
 import { useSmallScreen } from "@/services/api/common";
+import { truncateText } from "@/utils/helpers";
 
 function Chat() {
   const [chatData, setChatData] = useAtom(chatDataAtom);
@@ -135,7 +136,7 @@ function Chat() {
               }
             >
               <h1 className="text-white w-full max-w-full lg:max-w-[775px]  font-geistMono text-[28px] uppercase font-normal tracking-[-0.02em]">
-                {searchValue}
+                {truncateText(searchValue, 40)}
                 {!searchValue && (
                   <Skeleton count={1} highlightColor="#803CFF" />
                 )}
