@@ -3,7 +3,7 @@ import { atom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 
 
-export const historyAtom = atomWithStorage<{ value: string; timestamp: string }[]>('history', []);
+export const historyAtom = atomWithStorage<{id:number; value: string; timestamp: string }[]>('history', []);
 
 export const chatDataAtom = atom<{
   searchValues: string[];

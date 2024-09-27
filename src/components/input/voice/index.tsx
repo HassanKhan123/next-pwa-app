@@ -72,10 +72,10 @@ function InputWithVoice() {
       if(pathname == "/") {
         router.push("/chat");
       }
-      setHistory((prev) => [
-        ...prev,
-        { value: searchQuery, timestamp: new Date().toISOString() },
-      ]);
+      setHistory((prev) => {
+        const lastId = prev.length > 0 ? prev[prev.length - 1].id : 0;
+        return [...prev, { id: lastId + 1, value: searchQuery, timestamp: new Date().toISOString()  }];
+      });
       setChatData((prev) => ({
         ...prev,
         searchValues: [...prev.searchValues, searchQuery],
@@ -90,10 +90,10 @@ function InputWithVoice() {
       if(pathname == "/") {
         router.push("/chat");
       }
-      setHistory((prev) => [
-        ...prev,
-        { value: searchQuery, timestamp: new Date().toISOString() },
-      ]);
+      setHistory((prev) => {
+        const lastId = prev.length > 0 ? prev[prev.length - 1].id : 0;
+        return [...prev, { id: lastId + 1, value: searchQuery, timestamp: new Date().toISOString()  }];
+      });
       setChatData((prev) => ({
         ...prev,
         searchValues: [...prev.searchValues, searchQuery],
