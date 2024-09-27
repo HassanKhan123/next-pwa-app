@@ -112,6 +112,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
   };
 
   const groupedHistory = groupByDate(history);
+  
 
   const filteredHistory = Object.entries(groupedHistory).reduce(
     (acc, [dateLabel, values]) => {
