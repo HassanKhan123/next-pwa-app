@@ -63,7 +63,11 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
 
       const timestamp = new Date().toISOString();
 
-      setHistory((prev) => [...prev, { value: message, timestamp }]);
+      setHistory((prev) => {
+        const lastId = prev.length > 0 ? prev[prev.length - 1].id : 0;
+        return [...prev, { id: lastId + 1, value: message, timestamp }];
+      });
+      
 
       setChatData((prev) => ({
         ...prev,
@@ -111,23 +115,25 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
 
   const filteredHistory = Object.entries(groupedHistory).reduce(
     (acc, [dateLabel, values]) => {
-      const filteredValues = values.filter((value) =>
+      const filteredValues = values.filter(({ value }) =>
         value.toLowerCase().includes(searchQuery.toLowerCase())
       );
+      
       if (filteredValues.length > 0) {
         acc[dateLabel] = filteredValues;
       }
+  
       return acc;
     },
-    {} as Record<string, string[]>
+    {} as Record<string, { id: number; value: string }[]>
   );
+  
 
   const handleConfirmDelete = () => {
     const { type, index } = deleteContext;
-
     if (type && index !== null) {
       if (type === "history") {
-        setHistory((prev) => prev.filter((_, i) => i !== index));
+        setHistory((prev) => prev.filter((item) => item.id !== index));
       } else if (type === "bookmark") {
         setBookmarks((prev) => prev.filter((_, i) => i !== index));
       }
@@ -217,16 +223,16 @@ function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
                           className="px-1 py-1.5 flex gap-1 justify-between rounded-lg text-white"
                         >
                           <p
-                            onClick={() => handlePost(value)}
+                            onClick={() => handlePost(value.value)}
                             className="md:text-xs text-base cursor-pointer text-[rgba(242,244,247,1)] font-[500] tracking-[-0.34px] leading-[120%] font-roboto"
                           >
-                            {value}
+                            {value.value}
                           </p>
                           <svg
                             onClick={() =>
                               openDeleteModal(
                                 "history",
-                                values.length - 1 - valueIndex
+                                value.id
                               )
                             }
                             xmlns="http://www.w3.org/2000/svg"

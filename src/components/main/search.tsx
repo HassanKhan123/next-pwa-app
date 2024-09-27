@@ -106,13 +106,11 @@ function Search() {
             heading={suggestion.heading}
             paragraph={suggestion.paragraph}
             navigateToChat={() => {
-              setHistory((prev) => [
-                ...prev,
-                {
-                  value: suggestion.heading,
-                  timestamp: new Date().toISOString(),
-                } as History,
-              ]);
+
+      setHistory((prev) => {
+        const lastId = prev.length > 0 ? prev[prev.length - 1].id : 0;
+        return [...prev, { id: lastId + 1, value: suggestion.heading, timestamp: new Date().toISOString() }];
+      });
               setChatData((prev) => ({
                 ...prev,
                 searchValues: [...prev.searchValues, suggestion.heading],
