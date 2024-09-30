@@ -9,10 +9,10 @@ import { ToastContainer } from "react-toastify";
 const inter = Inter({ subsets: ["latin"] });
 
 const roboto_mano = Roboto_Mono({
-  subsets: ['latin'],
-  variable: '--roboto-mano',
-  weight: ['100', '200', '300', '400', '500', '600', '700']
-})
+  subsets: ["latin"],
+  variable: "--roboto-mano",
+  weight: ["100", "200", "300", "400", "500", "600", "700"],
+});
 
 export const metadata: Metadata = {
   title: "AI Search Engine",
@@ -26,7 +26,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`lg:p-[10px] overflow-auto lg:overflow-hidden p-[0px] ${roboto_mano.className}`}>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#000000" />
+      </head>
+      <body
+        className={`lg:p-[10px] overflow-auto lg:overflow-hidden p-[0px] ${roboto_mano.className}`}
+      >
         <AppKitProvider>
           <JotaiProvider>
             <ToastContainer />
@@ -37,5 +43,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-
