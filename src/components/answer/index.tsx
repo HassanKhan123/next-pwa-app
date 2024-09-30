@@ -19,11 +19,18 @@ interface AnswerCardProps {
   text: string;
   searchValue: string;
   time: string;
-  id: string; 
-  handleRebuild: () => void
+  id: string;
+  handleRebuild: () => void;
 }
 
-function AnswerCard({ isLoading, text, searchValue, time, id, handleRebuild }: AnswerCardProps) {
+function AnswerCard({
+  isLoading,
+  text,
+  searchValue,
+  time,
+  id,
+  handleRebuild,
+}: AnswerCardProps) {
   const [bookmarks, setBookmarks] = useAtom(bookmarkAtom);
   const [formattedTime, setFormattedTime] = useState<string | null>(null);
   const markdownContent = MarkdownRenderer({ text });
@@ -66,7 +73,7 @@ function AnswerCard({ isLoading, text, searchValue, time, id, handleRebuild }: A
   }, [time]);
 
   const handleCopy = () => {
-    const div = document.getElementById(`markdown-${id}`); 
+    const div = document.getElementById(`markdown-${id}`);
     navigator.clipboard
       .writeText(div?.innerText || "")
       .then(() => {
@@ -106,10 +113,14 @@ function AnswerCard({ isLoading, text, searchValue, time, id, handleRebuild }: A
           <div
             id={`markdown-${id}`} // Assign unique ID
             className="text-white text-[16px] font-normal font-roboto"
+            //@ts-ignore
             dangerouslySetInnerHTML={markdownContent}
           />
           <div className="flex gap-[10px] items-center">
-            <div onClick={handleRebuild} className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center transition-transform transform hover:bg-[rgba(255,255,255,0.1)] hover:scale-105">
+            <div
+              onClick={handleRebuild}
+              className="flex gap-[6px] cursor-pointer shadow-custom-inset border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] rounded-[20px] p-[8px_16px_8px_16px] items-center transition-transform transform hover:bg-[rgba(255,255,255,0.1)] hover:scale-105"
+            >
               <Image
                 src={ReloadIcon}
                 alt="reload_icon"
@@ -167,4 +178,3 @@ function AnswerCard({ isLoading, text, searchValue, time, id, handleRebuild }: A
 }
 
 export default AnswerCard;
-
